@@ -292,7 +292,17 @@ button:hover {
     /* --- finish Media query of quizz - Marcos part ---  */
 
     /* --- starting Media query of add-quizz - Carlos part ---  */
+    .add-quizz form {
+        width: 100vw;
+    }
+    .add-quizz form input{
+        width: 90vw;
+    }
 
+    .add-quizz section button {
+        width: 80vw;
+        max-width: 370px;
+    }
     /* --- finish Media query of add-quizz - Carlos part ---  */
     
 }
