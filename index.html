@@ -52,7 +52,7 @@
     </article>
     <article class="add-quizz">
 
-        <section class="basic-info-form">
+        <section class="basic-info-form hidden">
             <h2>Comece pelo começo</h2>
             <form action="">
                 <div class="basic-info-content">
@@ -65,10 +65,10 @@
             <button>Prosseguir para criar perguntas</button>
         </section>
 
-        <section class="questions-form hidden">
+        <section class="questions-form">
             <h2>Crie suas perguntas</h2>
 
-            <form action="" id="first-question" class="minimize">
+            <form action="" id="first-question" class="">
                 <div class="top-question-bar">
                     <h3>Pergunta 1</h3>
                     <ion-icon name="create-outline"></ion-icon>
@@ -147,31 +147,46 @@
             <button>Prosseguir para criar níveis</button>
         </section>
 
-        <section class="levels-form hidden">
+        <section class="levels-form  hidden">
             <h2>Agora, decida os níveis</h2>
-            <form action="" id="first-level">
-                <h3>Nível 1</h3>
-                <ion-icon name="create-outline"></ion-icon>
-                <input type="text" id="level-title-1" placeholder="Título do nível">
-                <input type="text" id="min-percentage-1" placeholder="% de acerto mínima">
-                <input type="text" id="level-url-image-1" placeholder="URL da imagem do nível">
-                <input type="text" id="level-description-1" placeholder="Descrição do nível">
+            <form action="" id="first-level" class="">
+                <div class="top-question-bar">
+                    <h3>Nível 1</h3>
+                    <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input type="text" id="level-title-1" placeholder="Título do nível">
+                    <input type="text" id="min-percentage-1" placeholder="% de acerto mínima">
+                    <input type="text" id="level-url-image-1" placeholder="URL da imagem do nível">
+                    <input type="text" id="level-description-1" placeholder="Descrição do nível">
+                </div>
+                
             </form>
-            <form action="" id="second-level">
-                <h3>Nível 2</h3>
-                <ion-icon name="create-outline"></ion-icon>
-                <input type="text" id="level-title-2" placeholder="Título do nível">
-                <input type="text" id="min-percentage-2" placeholder="% de acerto mínima">
-                <input type="text" id="level-url-image-2" placeholder="URL da imagem do nível">
-                <input type="text" id="level-description-2" placeholder="Descrição do nível">
+            <form action="" id="second-level" class="minimize">
+                <div class="top-question-bar">
+                    <h3>Nível 2</h3>
+                    <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input type="text" id="level-title-2" placeholder="Título do nível">
+                    <input type="text" id="min-percentage-2" placeholder="% de acerto mínima">
+                    <input type="text" id="level-url-image-2" placeholder="URL da imagem do nível">
+                    <input type="text" id="level-description-2" placeholder="Descrição do nível">
+                </div>
+                
             </form>
-            <form action="" id="third-level">
-                <h3>Nível 3</h3>
-                <ion-icon name="create-outline"></ion-icon>
-                <input type="text" id="level-title-3" placeholder="Título do nível">
-                <input type="text" id="min-percentage-3" placeholder="% de acerto mínima">
-                <input type="text" id="level-url-image-3" placeholder="URL da imagem do nível">
-                <input type="text" id="level-description-3" placeholder="Descrição do nível">
+            <form action="" id="third-level" class="minimize">
+                <div class="top-question-bar">
+                    <h3>Nível 3</h3>
+                    <ion-icon name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input type="text" id="level-title-3" placeholder="Título do nível">
+                    <input type="text" id="min-percentage-3" placeholder="% de acerto mínima">
+                    <input type="text" id="level-url-image-3" placeholder="URL da imagem do nível">
+                    <input type="text" id="level-description-3" placeholder="Descrição do nível">
+                </div>
+                
             </form>
             <button>Finalizar Quizz</button>
         </section>
