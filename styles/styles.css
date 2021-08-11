@@ -163,3 +163,59 @@ h1 {
 button:hover {
     cursor: pointer;
 }
+
+@media (max-width: 1099px) {
+    .banner {
+        height: 142px;
+    }
+    .quizz-name {
+        font-size: 19px;
+    }
+    .questions {
+        margin: 25px auto 0px auto;
+    }
+    .question {
+        width: 100%;
+        padding: 18px;
+        margin-bottom: 25px;
+    }
+    .question-text {
+        height: 89px;
+        font-size: 19px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .alternative-image {
+        width: 42vw;
+        height: 22vh;
+    }
+    .alternative-name {
+        font-size: 13px;
+    }
+    .results {
+        width: 100%;
+        padding: 18px;
+        flex-direction: column;
+        margin: 0px auto 35px auto;
+    }
+    .results-title {
+        font-size: 19px;
+        text-align: center;
+    }
+    .results-image {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .results-text {
+        width: 100%;
+        font-size: 17px;
+    }
+    .reload-quizz {
+        width: 220px;
+        height: 44px;
+        font-size: 18px;
+    }
+    .back-home {
+        font-size: 18px;
+    }
+}
