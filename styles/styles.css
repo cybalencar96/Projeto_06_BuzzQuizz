@@ -188,16 +188,20 @@ button:hover {
 
 .add-quizz form {
     width: 600px;
-    height: 256px;
     background-color: white;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     padding: 25px 0;
+    margin-bottom: 30px;
+    row-gap: 10px;
+
+    transition: height 1s linear;
+    overflow: hidden;
 }
+
 
 .add-quizz form input {
     width: 564px;
@@ -214,7 +218,7 @@ button:hover {
     display: block;
     text-align: center;
     font-size: 21px;
-    margin: 85px auto 0 auto;
+    margin: 85px auto 85px auto;
 
     background-color: #EC362D;
     color: #FFF5F4;
@@ -230,6 +234,28 @@ button:hover {
     font-size: 19px;
     line-height: 22px;
     font-style: italic;
+}
+
+.add-quizz h3 {
+    width: 100%;
+    font-weight: 700;
+    font-size: 20px;
+    padding-left: 20px;
+    margin-top: 3px;
+}
+
+.add-quizz #wrong-url-1, .add-quizz #wrong-url-2 {
+    margin-bottom: 25px;
+}
+
+.add-quizz .right, .add-quizz .wrong {
+    margin: 20px 0;
+}
+
+.minimize {
+    height: 74px;
+    overflow: hidden;
+    margin-top: 10px;
 }
  /* --- Finish add-quizz forms - Carlos part --- */
  
