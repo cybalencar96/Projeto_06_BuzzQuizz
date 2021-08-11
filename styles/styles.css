@@ -168,13 +168,74 @@ button:hover {
  /* --- Finish quizz - Marcos part --- */
 
 
- /* --- Starting add-quizz forms --- */
+ /* --- Starting add-quizz forms - Carlos part --- */
 
- /* --- Finish add-quizz forms --- */
+.add-quizz {
+    margin-top: 69px;
+    height: calc(100vh - 69px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.add-quizz h2 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 23px;
+    margin: 70px 0 50px 0;
+}
+
+.add-quizz form {
+    width: 600px;
+    height: 256px;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 25px 0;
+}
+
+.add-quizz form input {
+    width: 564px;
+    height: 46px;
+
+    background: #FFFFFF;
+    border: 1px solid #D1D1D1;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding-left: 20px;
+}
+
+.add-quizz section button {
+    display: block;
+    text-align: center;
+    font-size: 21px;
+    margin: 85px auto 0 auto;
+
+    background-color: #EC362D;
+    color: #FFF5F4;
+    border-radius: 15px;
+    border: none;
+
+    width: 370px;
+    height: 54px;
+}
+
+.add-quizz form input::placeholder {
+    color: #BABABA;
+    font-size: 19px;
+    line-height: 22px;
+    font-style: italic;
+}
+ /* --- Finish add-quizz forms - Carlos part --- */
  
 
-/* --- Media query of quizz ---  */
 @media (max-width: 1099px) {
+    /* --- starting Media query of quizz - Marcos part ---  */
     .banner {
         height: 142px;
     }
@@ -228,4 +289,10 @@ button:hover {
     .back-home {
         font-size: 18px;
     }
+    /* --- finish Media query of quizz - Marcos part ---  */
+
+    /* --- starting Media query of add-quizz - Carlos part ---  */
+
+    /* --- finish Media query of add-quizz - Carlos part ---  */
+    
 }
