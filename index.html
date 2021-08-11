@@ -50,7 +50,114 @@
         <button class="reload-quizz">Reiniciar Quizz</button>
         <button class="back-home">Voltar para Home</button>
     </article>
-    <article class="add-quizz hidden"></article>
+    <article class="add-quizz hidden">
+
+        <section class="basic-info-form">
+            <h2>Comece pelo começo</h2>
+            <form action="">
+                <input type="text" id="title" placeholder="Título do seu quizz">
+                <input type="text" id="url-quizz-image" placeholder="URL da imagem do seu quizz">
+                <input type="text" id="qty-questions" placeholder="Quantidade de perguntas do quizz">
+                <input type="text" id="qty-levels" placeholder="Quantidade de níveis do quizz">
+            </form>
+            <button>Prosseguir para criar perguntas</button>
+        </section>
+
+        <section class="questions-form hidden">
+            <h2>Crie suas perguntas</h2>
+            <form action="" id="first-question">
+                <h3>Pergunta 1</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="question-text" placeholder="Texto da pergunta">
+                <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
+                
+                <h3>Resposta correta</h3>
+                <input type="text" id="right-answer" placeholder="Resposta correta">
+                <input type="text" id="url-image-right" placeholder="URL da imagem">
+                
+                <h3>Respostas incorretas</h3>
+                <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
+                <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
+
+                <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
+                <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
+
+                <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
+                <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
+            </form>
+            <form action="" id="second-question">
+                <h3>Pergunta 2</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="question-text" placeholder="Texto da pergunta">
+                <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
+                
+                <h3>Resposta correta</h3>
+                <input type="text" id="right-answer" placeholder="Resposta correta">
+                <input type="text" id="url-image-right" placeholder="URL da imagem">
+                
+                <h3>Respostas incorretas</h3>
+                <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
+                <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
+
+                <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
+                <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
+
+                <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
+                <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
+            </form>
+            <form action="" id="third-question">
+                <h3>Pergunta 3</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="question-text" placeholder="Texto da pergunta">
+                <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
+
+                <h3>Resposta correta</h3>
+                <input type="text" id="right-answer" placeholder="Resposta correta">
+                <input type="text" id="url-image-right" placeholder="URL da imagem">
+
+                <h3>Respostas incorretas</h3>
+                <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
+                <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
+
+                <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
+                <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
+
+                <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
+                <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
+            </form>
+            <button>Prosseguir para criar níveis</button>
+        </section>
+
+        <section class="levels-form hidden">
+            <h2>Agora, decida os níveis</h2>
+            <form action="" id="first-level">
+                <h3>Nível 1</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="level-title-1" placeholder="Título do nível">
+                <input type="text" id="min-percentage-1" placeholder="% de acerto mínima">
+                <input type="text" id="level-url-image-1" placeholder="URL da imagem do nível">
+                <input type="text" id="level-description-1" placeholder="Descrição do nível">
+            </form>
+            <form action="" id="second-level">
+                <h3>Nível 2</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="level-title-2" placeholder="Título do nível">
+                <input type="text" id="min-percentage-2" placeholder="% de acerto mínima">
+                <input type="text" id="level-url-image-2" placeholder="URL da imagem do nível">
+                <input type="text" id="level-description-2" placeholder="Descrição do nível">
+            </form>
+            <form action="" id="third-level">
+                <h3>Nível 3</h3>
+                <ion-icon name="create-outline"></ion-icon>
+                <input type="text" id="level-title-3" placeholder="Título do nível">
+                <input type="text" id="min-percentage-3" placeholder="% de acerto mínima">
+                <input type="text" id="level-url-image-3" placeholder="URL da imagem do nível">
+                <input type="text" id="level-description-3" placeholder="Descrição do nível">
+            </form>
+            <button>Finalizar Quizz</button>
+        </section>
+    
+    </article>
 
 </body>
 </html>
