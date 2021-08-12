@@ -148,14 +148,18 @@
     </article>
     <article class="add-quizz ">
 
-        <section class="basic-info-form  hidden">
+        <section class="basic-info-form hidden">
             <h2>Comece pelo começo</h2>
             <form action="">
                 <div class="basic-info-content">
                     <input type="text" id="title" placeholder="Título do seu quizz">
+                    <h5 class="title-error hidden">Título precisa possuir entre 20 e 65 caracteres</h5>
                     <input type="text" id="url-quizz-image" placeholder="URL da imagem do seu quizz">
+                    <h5 class="url-error hidden">URL foge dos padrões necessários</h5>
                     <input type="text" id="qty-questions" placeholder="Quantidade de perguntas do quizz">
+                    <h5 class="qty-questions-error hidden">Mínimo de perguntas: 3</h5>
                     <input type="text" id="qty-levels" placeholder="Quantidade de níveis do quizz">
+                    <h5 class="qty-levels-error hidden">Mínimo de níveis: 2</h5>
                 </div>                
             </form>
             <button>Prosseguir para criar perguntas</button>
@@ -244,7 +248,7 @@
                 
             </form>
 
-            <button>Prosseguir para criar níveis</button>
+            <button onclick="nextForm(1)">Prosseguir para criar níveis</button>
             <div class="extra-space"></div>
 
         </section>
@@ -294,12 +298,12 @@
                 
             </form>
 
-            <button>Finalizar Quizz</button>
+            <button onclick="nextForm(2)">Finalizar Quizz</button>
             <div class="extra-space"></div>
 
         </section>
 
-        <section class="quizz-ready">
+        <section class="quizz-ready hidden">
             <h2>Seu quizz está pronto!</h2>
 
             <div class="quizz-image">
@@ -308,7 +312,7 @@
                 <p>O quão Potterhead é você?</p>
             </div>
 
-            <button>Acessar Quizz</button>
+            <button onclick="nextForm(3)">Acessar Quizz</button>
             <button class="back-home">Voltar pra home</button>
             <div class="extra-space"></div>
         </section>

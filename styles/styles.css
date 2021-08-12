@@ -353,6 +353,10 @@ form.minimize {
     padding-left: 20px;
 }
 
+.add-quizz form input:focus {
+    outline: none;
+}
+
 .add-quizz section button {
     display: block;
     text-align: center;
@@ -408,6 +412,12 @@ form.minimize {
 .add-quizz .extra-space {
     width: 10px;
     height: 65px;
+}
+
+.add-quizz section form h5 {
+    font-size: 15px;
+    color: red;
+    font-style: italic;
 }
  /* --- Finish add-quizz forms - Carlos part --- */
  
