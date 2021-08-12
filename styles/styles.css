@@ -253,15 +253,15 @@ h2 {
     border: 0px;
 }
 .back-home {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0px auto 50px auto;
-    font-size: 21px;
-    font-weight: 400;
-    color: #818181;
-    background-color: #fafafa;
-    border: 0px;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0px auto 50px auto !important;
+    font-size: 21px !important;
+    font-weight: 400 !important;
+    color: #818181 !important;
+    background-color: #fafafa !important;
+    border: 0px !important;
 }
 .alternative:hover {
     cursor: pointer;
@@ -303,7 +303,7 @@ form.minimize {
     height: 74px;
     overflow: hidden;
     margin-top: 10px;
-    transition: all 1s linear;
+    transition: height 1s linear;
 
 }
 
@@ -357,7 +357,7 @@ form.minimize {
     display: block;
     text-align: center;
     font-size: 21px;
-    margin: 85px auto 85px auto;
+    margin: 85px auto 20px auto;
 
     background-color: #EC362D;
     color: #FFF5F4;
@@ -383,22 +383,31 @@ form.minimize {
     margin: 20px 0;
 }
 
-
-
-.quizz-img-container {
-    background-image: url("/assets/potterQuizz.jpeg");
-    background-size: cover;
-    position: relative;
+.add-quizz .quizz-image{
+    margin: 0 auto;
+    word-wrap: break-word; 
     width: 500px;
     height: 266px;
+    position: relative; 
 }
-.quizz-img-container h4{
+.add-quizz .quizz-image p{
     
     position: absolute;
     color: white;
     font-size: 23px;
     bottom: 20px;
     left: 20px;
+}
+
+.add-quizz .quizz-image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+}
+
+.add-quizz .extra-space {
+    width: 10px;
+    height: 65px;
 }
  /* --- Finish add-quizz forms - Carlos part --- */
  
@@ -408,16 +417,18 @@ form.minimize {
     .home{
         margin: 100px auto;
         width: 96vw;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
     .user-quizzes .empty {
         width: 340px;
         height: 181px;
+        margin: 0 auto;
     }
     .quizz-box .quizz{
         margin: 0px auto 10px ;
+    }
+
+    .home .all-quizzes {
+        margin: 20px;
     }
     /* --- starting Media query of home - Kevin part --- */
     /* --- starting Media query of quizz - Marcos part ---  */
@@ -493,7 +504,12 @@ form.minimize {
 
     .add-quizz section button {
         width: 80vw;
-        max-width: 370px;
+        max-width: 300px;
+    }
+
+    .add-quizz .quizz-image {
+        width: 375px;
+        height: auto;
     }
     /* --- finish Media query of add-quizz - Carlos part ---  */
     

@@ -146,9 +146,9 @@
         <button class="reload-quizz">Reiniciar Quizz</button>
         <button class="back-home">Voltar para Home</button>
     </article>
-    <article class="add-quizz hidden">
+    <article class="add-quizz ">
 
-        <section class="basic-info-form hidden">
+        <section class="basic-info-form  hidden">
             <h2>Comece pelo começo</h2>
             <form action="">
                 <div class="basic-info-content">
@@ -159,9 +159,11 @@
                 </div>                
             </form>
             <button>Prosseguir para criar perguntas</button>
+            <div class="extra-space"></div>
+
         </section>
 
-        <section class="questions-form">
+        <section class="questions-form hidden">
             <h2>Crie suas perguntas</h2>
 
             <form action="" id="first-question" onclick="this.classList.toggle('minimize')">
@@ -243,6 +245,8 @@
             </form>
 
             <button>Prosseguir para criar níveis</button>
+            <div class="extra-space"></div>
+
         </section>
 
         <section class="levels-form hidden">
@@ -289,18 +293,24 @@
                 </div>
                 
             </form>
+
             <button>Finalizar Quizz</button>
+            <div class="extra-space"></div>
+
         </section>
 
         <section class="quizz-ready">
-            <h2>Agora, decida os níveis</h2>
+            <h2>Seu quizz está pronto!</h2>
 
-            <div class="quizz-img-container">
-                <h4>O quão Potterhead é você?</h4>
+            <div class="quizz-image">
+                <img src="https://criadoresid.com/wp-content/uploads/2016/11/hogwarts-real.jpg">
+                <div class="black-gradient"></div>
+                <p>O quão Potterhead é você?</p>
             </div>
 
             <button>Acessar Quizz</button>
-            <button>Voltar pra home</button>
+            <button class="back-home">Voltar pra home</button>
+            <div class="extra-space"></div>
         </section>
     
     </article>
