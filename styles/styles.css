@@ -280,6 +280,22 @@ button:hover {
     overflow: hidden;
     margin-top: 10px;
 }
+
+.quizz-img-container {
+    background-image: url("/assets/potterQuizz.jpeg");
+    background-size: cover;
+    position: relative;
+    width: 500px;
+    height: 266px;
+}
+.quizz-img-container h4{
+    
+    position: absolute;
+    color: white;
+    font-size: 23px;
+    bottom: 20px;
+    left: 20px;
+}
  /* --- Finish add-quizz forms - Carlos part --- */
  
 
