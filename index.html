@@ -111,7 +111,7 @@
         </section>
         
     </article>
-    <article class="quizz-game">
+    <article class="quizz-game hidden">
         <div class="banner">
             <h2 class="quizz-name">O quão Potterhead é você?</h2>
         </div>
@@ -146,7 +146,7 @@
         <button class="reload-quizz">Reiniciar Quizz</button>
         <button class="back-home">Voltar para Home</button>
     </article>
-    <article class="add-quizz hidden">
+    <article class="add-quizz">
 
         <section class="basic-info-form hidden">
             <h2>Comece pelo começo</h2>
@@ -170,83 +170,9 @@
         <section class="questions-form hidden">
             <h2>Crie suas perguntas</h2>
 
-            <form action="" id="first-question" onclick="this.classList.toggle('minimize')">
-                <div class="top-question-bar">
-                    <h3>Pergunta 1</h3>
-                    <ion-icon name="create-outline"></ion-icon>
-                </div>
-                <div class="question-content">
-                    <input type="text" id="question-text" placeholder="Texto da pergunta">
-                    <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
-                    
-                    <h3 class="right">Resposta correta</h3>
-                    <input type="text" id="right-answer" placeholder="Resposta correta">
-                    <input type="text" id="url-image-right" placeholder="URL da imagem">
-                    
-                    <h3 class="wrong">Respostas incorretas</h3>
-                    <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
-                    <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
-
-                    <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
-                    <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
-
-                    <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
-                    <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
-                </div>
-                
-            </form>
+            <div class="subforms-container">
+            </div>
             
-            <form action="" id="second-question" onclick="this.classList.toggle('minimize')" class="minimize">
-                <div class="top-question-bar">
-                    <h3>Pergunta 2</h3>
-                    <ion-icon name="create-outline"></ion-icon>
-                </div>
-                <div class="question-content">
-                    <input type="text" id="question-text" class="minimize" placeholder="Texto da pergunta">
-                    <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
-                    
-                    <h3 class="right">Resposta correta</h3>
-                    <input type="text" id="right-answer" placeholder="Resposta correta">
-                    <input type="text" id="url-image-right" placeholder="URL da imagem">
-                    
-                    <h3 class="wrong">Respostas incorretas</h3>
-                    <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
-                    <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
-
-                    <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
-                    <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
-
-                    <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
-                    <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
-                </div>
-                
-            </form>
-
-            <form action="" id="third-question" onclick="this.classList.toggle('minimize')" class="minimize">
-                <div class="top-question-bar">
-                    <h3>Pergunta 3</h3>
-                    <ion-icon name="create-outline"></ion-icon>
-                </div>
-                <div class="question-content">
-                    <input type="text" id="question-text" placeholder="Texto da pergunta">
-                    <input type="text" id="backgroud-color-text" placeholder="Cor de fundo da pergunta">
-
-                    <h3 class="right">Resposta correta</h3>
-                    <input type="text" id="right-answer" placeholder="Resposta correta">
-                    <input type="text" id="url-image-right" placeholder="URL da imagem">
-
-                    <h3 class="wrong">Respostas incorretas</h3>
-                    <input type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1">
-                    <input type="text" id="wrong-url-1" placeholder="URL da imagem 1">
-
-                    <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2">
-                    <input type="text" id="wrong-url-2" placeholder="URL da imagem 2">
-
-                    <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
-                    <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
-                </div>
-                
-            </form>
 
             <button onclick="nextForm(1)">Prosseguir para criar níveis</button>
             <div class="extra-space"></div>
