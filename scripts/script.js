@@ -290,5 +290,5 @@ const validateQuestionText = function(e){
 }
 
 
-basicInfoForm();
+//basicInfoForm();
 
