@@ -398,7 +398,7 @@ const validateBackgroudColorText = function(e) {
     const backgroundColorText = currentQuestion.querySelector('#background-color-text');
     const backgroundColorTextError = currentQuestion.querySelector('.background-text-error');
     const inputValue = backgroundColorText.value;
-    const hexa = "#123456789ABCDEF";
+    const hexa = "#0123456789ABCDEF";
 
     let invalidHexa = false;
 
