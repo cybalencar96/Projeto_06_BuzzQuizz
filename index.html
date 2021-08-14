@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BuzzQuizz</title>
+    <link rel="shortcut icon" href="https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2Fa214649c-1c4c-4a1e-80a6-bbc56c6994f6%2Fbuzzquizz.png?table=block&id=1f23c192-29b5-472e-9a93-76faaac14a91&spaceId=f797e032-5eb2-4c9d-beb7-cd7181e19e47&width=250&userId=3bd76f82-413f-4bc4-815d-dfcd676607e8&cache=v2" type="image/x-icon">
     <link rel="stylesheet" href="/styles/reset.css">
     <link rel="stylesheet" href="/styles/styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,104 +13,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="top-bar">
+    <header class="top-bar clickable" onclick="changePage(0)">
         <h1>BuzzQuizz</h1>
     </header>
-    <article class="home hidden">
-        <section class="user-quizzes">
-            <div class="empty">
-                    <p>
-                        Você não criou nenhum <br>
-                        quizz ainda :(
-                    </p>
-                    <button>
-                        <span>Criar Quizz</span>
-                    </button>
-            </div>
-        </section>
-        <section class="user-quizzes hidden ">
-            <div class="section-title">
-                <strong>Seus Quizzes</strong>
-                <ion-icon name="add-circle"></ion-icon>
-            </div>
-            <div class="quizz-box">
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>O quanto você é de boas?</p>
-                </div>
-            </div>
+    <article class="home ">
+        <section class="user-quizzes ">
         </section>
         <section class="all-quizzes">
             <div class="section-title">
                 <strong>Todos os Quizzes</strong>
             </div>
             <div class="quizz-box">
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>O quanto você é de boas?</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                <div class="quizz">
-                    <img src="https://observatoriodocinema.uol.com.br/wp-content/uploads/2020/05/Os-Simpsons.jpg">
-                    <div class="black-gradient"></div>
-                    <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
-                </div>
-                
-                
             </div>
         </section>
-        
     </article>
     <article class="quizz-game hidden">
         <div class="banner">
@@ -146,7 +62,7 @@
         <button class="reload-quizz">Reiniciar Quizz</button>
         <button class="back-home">Voltar para Home</button>
     </article>
-    <article class="add-quizz">
+    <article class="add-quizz hidden">
 
         <section class="basic-info-form hidden">
             <h2>Comece pelo começo</h2>
