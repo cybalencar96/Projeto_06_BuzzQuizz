@@ -498,6 +498,29 @@ function hasLevelErrors() {
     return false;
 }
 
+function loadFormEnd() {
+    //primeiro verificar se todas os niveis constam preenchidos e salvos
+    saveLevel();
+    if (formData.levelsForm.length !== formData.basicInfoForm.qtyLevels) {
+        alert('Preencha todas os níveis antes de prosseguir');
+        return;
+    }
+
+    const levelsSection = document.querySelector('.levels-form');
+    levelsSection.classList.add('hidden');
+    console.log(levelsSection);
+
+    const formEndSection = document.querySelector('.quizz-ready');
+    formEndSection.classList.remove('hidden');
+    console.log(formEndSection);
+
+    const quizzImage = formEndSection.querySelector('.quizz-image img');
+    quizzImage.setAttribute('src',formData.basicInfoForm.quizzImage);
+
+    const quizzTitle = formEndSection.querySelector('.quizz-image p');
+    quizzTitle.innerHTML = formData.basicInfoForm.title;
+}
+
 const validateTitle = function(e) {
     e.preventDefault();
 
@@ -900,5 +923,7 @@ const validateLevelDescription = function(e) {
             levelDescriptionError.classList.add("hidden");
     }
 }
+
+
 basicInfoForm();
 
