@@ -72,7 +72,7 @@ function loadQuestionsSection() {
     for (let i = 0; i < qtyQuestions; i++) {
         let questionFormModel = 
         `<form action="" id="question-${i+1}">
-            <div class="top-question-bar" onclick="toggleQuestion(this.parentNode,${i})">
+            <div class="top-question-bar" onclick="toggleQuestion(this.parentNode,${i+1})">
                 <h3>Pergunta ${i+1}</h3>
                 <ion-icon name="create-outline"></ion-icon>
             </div>
@@ -104,7 +104,7 @@ function loadQuestionsSection() {
                 <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3">
                     <h5 class="wrong-answer3-error hidden">Campo não pode permanecer vazio</h5>
                 <input type="text" id="wrong-url-3" placeholder="URL da imagem 3">
-                    <h5 class="wrong-url2-error hidden">Formato URL inválido</h5>
+                    <h5 class="wrong-url3-error hidden">Formato URL inválido</h5>
 
                 
             </div>
@@ -121,20 +121,20 @@ function loadQuestionsSection() {
 function listenQuestion() {
     currentQuestion.classList.add('show');
 
-    const questionText = currentQuestion.querySelector('#question-text');
-    const backgroundColorText = currentQuestion.querySelector('#background-color-text');
+    questionText = currentQuestion.querySelector('#question-text');
+    backgroundColorText = currentQuestion.querySelector('#background-color-text');
 
-    const rightAnswer = currentQuestion.querySelector('#right-answer');
-    const urlImageRight = currentQuestion.querySelector('#url-image-right');
+    rightAnswer = currentQuestion.querySelector('#right-answer');
+    urlImageRight = currentQuestion.querySelector('#url-image-right');
 
-    const wrongAnswer1 = currentQuestion.querySelector('#wrong-answer-1');
-    const wrongUrl1 = currentQuestion.querySelector('#wrong-url-1');
+    wrongAnswer1 = currentQuestion.querySelector('#wrong-answer-1');
+    wrongUrl1 = currentQuestion.querySelector('#wrong-url-1');
 
-    const wrongAnswer2 = currentQuestion.querySelector('#wrong-answer-2');
-    const wrongUrl2 = currentQuestion.querySelector('#wrong-url-2');
+    wrongAnswer2 = currentQuestion.querySelector('#wrong-answer-2');
+    wrongUrl2 = currentQuestion.querySelector('#wrong-url-2');
 
-    const wrongAnswer3 = currentQuestion.querySelector('#wrong-answer-3');
-    const wrongUrl3 = currentQuestion.querySelector('#wrong-url-3');
+    wrongAnswer3 = currentQuestion.querySelector('#wrong-answer-3');
+    wrongUrl3 = currentQuestion.querySelector('#wrong-url-3');
 
     questionText.addEventListener('keyup', validateQuestionText);
     backgroundColorText.addEventListener('keyup', validateBackgroudColorText);
@@ -155,20 +155,92 @@ function listenQuestion() {
 
 //form de qual pergunta está sendo preenchida
 let currentQuestion;
-function toggleQuestion(newSectionForm) {
+let questionText;
+let backgroundColorText;
+
+let rightAnswer;
+let urlImageRight;
+
+let wrongAnswer1;
+let wrongUrl1;
+
+let wrongAnswer2;
+let wrongUrl2;
+
+let wrongAnswer3;
+let wrongUrl3;
+
+let questionId = 1;
+function toggleQuestion(newSectionForm, questionIdentifier) {
     // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
     if (!hasQuestionErrors()) {
         console.log('salva questão')
         saveQuestion();
+        questionText.removeEventListener('keyup', validateQuestionText);
+        backgroundColorText.removeEventListener('keyup', validateBackgroudColorText);
+        
+        rightAnswer.removeEventListener('keyup', validateRightAnswer);
+        urlImageRight.removeEventListener('keyup',validateRightUrlImage);
+
+        wrongAnswer1.removeEventListener('keyup',validateWrongAnswer1);
+        wrongUrl1.removeEventListener('keyup', validateWrongUrl1);
+
+        wrongAnswer2.removeEventListener('keyup',validateWrongAnswer2);
+        wrongUrl2.removeEventListener('keyup', validateWrongUrl2);
+
+        wrongAnswer3.removeEventListener('keyup',validateWrongAnswer3);
+        wrongUrl3.removeEventListener('keyup', validateWrongUrl3);
+
+        currentQuestion.classList.remove('show');
+        currentQuestion = newSectionForm;
+        questionId = questionIdentifier;
+        currentQuestion.classList.add('show');
+
+        listenQuestion();
     } 
     else {
         alert('Preencha todos os campos obrigatórios corretamente');
         return;
     }
 
-    currentQuestion.classList.add('hidden')
-    currentQuestion = newSectionForm;
-    currentQuestion.classList.remove('hidden');
+    
+}
+
+function saveQuestion() {
+
+    const questionAnswers = {
+        questionId: questionId, 
+        questionTextValue: questionText.value,
+        backgroundColorTextValue: backgroundColorText.value,
+        rightAnswerValue: rightAnswer.value,
+        urlImageRightValue: urlImageRight.value,
+        wrongAnswer1Value: wrongAnswer1.value,
+        wrongUrl1Value: wrongUrl1.value,
+        wrongAnswer2Value: wrongAnswer2.value,
+        wrongUrl2Value: wrongUrl2.value,
+        wrongAnswer3Value: wrongAnswer3.value,
+        wrongUrl3Value: wrongUrl3.value
+    }
+
+    const questionUpdate = formData.questionsForm.indexOf((question) => {
+        if (question.questionId === questionAnswers.questionId) {
+            return true;
+        }
+    })
+
+    // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
+    const indexUpdateQuestion = formData.questionsForm.map((e) => {return e.questionId});
+    indexUpdateQuestion.indexOf(questionAnswers.questionId);
+    console.log(indexUpdateQuestion);
+    
+    if (indexUpdateQuestion === -1) {
+        formData.questionsForm.push(questionAnswers);
+    }
+    else {
+        formData.questionsForm[indexUpdateQuestion] = questionAnswers 
+    }
+
+    console.log(formData)
 }
 
 function hasQuestionErrors() {
@@ -180,6 +252,9 @@ function hasQuestionErrors() {
             alert('Corrija os erros antes de prosseguir');
             return true;
         }
+    }
+    if (questionText.value === "" || backgroundColorText.value === "" || rightAnswer.value === "" || urlImageRight.value === "" || wrongAnswer1.value ===  "" || wrongUrl1.value === "") {
+        return true;
     }
     return false;
 }
