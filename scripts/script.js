@@ -4,21 +4,68 @@ const URL_API = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/qu
 requestQuizzes()
 function requestQuizzes() {
     const promise = axios.get(URL_API)
-    promise.then(renderQuizzes);
+    promise.then(renderHome);
     promise.catch(console.log)
 }
 
-function renderQuizzes(response) {
+function renderHome(response) {
     const quizzes = response.data;
+    const userQuizzIds = renderUserQuizzes();
     const allQuizzBox = document.querySelector(".all-quizzes .quizz-box");
     allQuizzBox.innerHTML = ""
-    for (let i = 0; i < quizzes.length; i++) {
-        allQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizzes[i].id})">
-            <img src="${quizzes[i].image}">
-            <div class="black-gradient"></div>
-            <p>${quizzes[i].title}</p>
-        </div>`;
+    quizzes.forEach(quizz => {
+        if (!userQuizzIds.includes(quizz.id)){
+            allQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizz.id})">
+                <img src="${quizz.image}">
+                <div class="black-gradient"></div>
+                <p>${quizz.title}</p>
+            </div>`;
+        }});
+}
+
+function renderUserQuizzes () {
+    const userQuizzIds = getUserQuizzes();
+    const userQuizzes = document.querySelector(".user-quizzes");
+    userQuizzes.innerHTML = `<div class="empty">
+        <p>
+            Você não criou nenhum <br>
+            quizz ainda :(
+        </p>
+        <button onclick="changePage(2)">
+            <span>Criar Quizz</span>
+        </button>
+    </div>`;
+    if (userQuizzIds.length > 0) {
+        userQuizzes.innerHTML = `<div class="section-title">
+            <strong>Seus Quizzes</strong>
+            <ion-icon name="add-circle" class="clickable" onclick="changePage(2)"></ion-icon>
+        </div>
+        <div class="quizz-box">
+        </div>`
+        const userQuizzBox = document.querySelector(".user-quizzes .quizz-box")
+        userQuizzIds.forEach(quizzId => {
+            let quizz;
+            const promise = axios.get(URL_API + `/${quizzId}`);
+            promise.then(response => {quizz = response.data
+                userQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizzId})">
+                <img src="${quizz.image}">
+                <div class="black-gradient"></div>
+                <p>${quizz.title}</p>
+            </div>`
+            });
+        });
     }
+    return userQuizzIds;
+}
+
+function getUserQuizzes() {
+    let userQuizzIds = localStorage.getItem("userQuizzIds");
+    if (!userQuizzIds) {
+        localStorage.setItem("userQuizzIds", "[]");
+        return getUserQuizzes();
+    }
+    userQuizzIds = JSON.parse(userQuizzIds);
+    return userQuizzIds;
 }
 
 function changePage(pageId, information){
@@ -43,6 +90,9 @@ function changePage(pageId, information){
             break;
     
         default:
+            pages[0].classList.add("hidden");
+            pages[1].classList.add("hidden");
+            pages[2].classList.add("hidden");
             break;
     }
 }
