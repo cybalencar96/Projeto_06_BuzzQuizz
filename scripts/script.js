@@ -98,17 +98,14 @@ function changePage(pageId, information){
 }
 
 // Forms scripts - Carlos part 
+let qtyQuestionsValue;
+let qtyLevelsValue;
 
 const formData = {
-    basicInfoForm: {
-        title:"",
-        quizzImage:"",
-        qtyQuestions:0,
-        qtyLevels:0
-    },
-
-    questionsForm: [],
-    levelsForm: []
+    title:"",
+    image:"",
+    questions: [],
+    levels: []
 }
 
 function basicInfoForm() {
@@ -143,10 +140,10 @@ function basicInfoForm() {
             }
         }
 
-        formData.basicInfoForm.title = title.value;
-        formData.basicInfoForm.quizzImage = quizzImage.value;
-        formData.basicInfoForm.qtyQuestions = Number(qtyQuestions.value);
-        formData.basicInfoForm.qtyLevels = Number(qtyLevels.value);
+        formData.title = title.value;
+        formData.image = quizzImage.value;
+        qtyQuestionsValue = Number(qtyQuestions.value);
+        qtyLevelsValue = Number(qtyLevels.value);
         buttonNextForm.removeEventListener('click', verifyErrors);
         firstForm.classList.add('hidden');
         loadQuestionsSection();
@@ -162,11 +159,10 @@ function loadQuestionsSection() {
     const questionsSection = document.querySelector('.questions-form');
     questionsSection.classList.remove('hidden');
 
-    const qtyQuestions = formData.basicInfoForm.qtyQuestions;
     const questionsContainer = questionsSection.querySelector('.subforms-container');
     questionsContainer.innerHTML = "";
 
-    for (let i = 0; i < qtyQuestions; i++) {
+    for (let i = 0; i < qtyQuestionsValue; i++) {
         let questionFormModel = 
         `<form action="" id="question-${i+1}">
             <div class="top-question-bar" onclick="toggleQuestion(this.parentNode,${i+1})">
@@ -302,39 +298,62 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
 
     
 }
-
+const questionIds= [];
+const levelIds = [];
 function saveQuestion() {
 
-    const questionAnswers = {
-        questionId: questionId, 
-        questionTextValue: questionText.value,
-        backgroundColorTextValue: backgroundColorText.value,
-        rightAnswerValue: rightAnswer.value,
-        urlImageRightValue: urlImageRight.value,
-        wrongAnswer1Value: wrongAnswer1.value,
-        wrongUrl1Value: wrongUrl1.value,
-        wrongAnswer2Value: wrongAnswer2.value,
-        wrongUrl2Value: wrongUrl2.value,
-        wrongAnswer3Value: wrongAnswer3.value,
-        wrongUrl3Value: wrongUrl3.value
+    const question = {
+        title: questionText.value,
+        color: backgroundColorText.value,
+        answers: [
+            {
+                text: rightAnswer.value,
+                image: urlImageRight.value,
+                isCorrectAnswer: true
+            },
+            {
+                text: wrongAnswer1.value,
+                image: wrongUrl1.value,
+                isCorrectAnswer: false
+            }
+        ]
+
+
     }
 
-    const questionUpdate = formData.questionsForm.indexOf((question) => {
-        if (question.questionId === questionAnswers.questionId) {
-            return true;
-        }
-    })
+    const answer = {
+        text: "",
+        image: "",
+        isCorrectAnswer:false
+    }
+    if (wrongAnswer2.value !== "" && wrongUrl2.value !== "") {
+        answer.text = wrongAnswer2.value;
+        answer.image = wrongUrl2.value;
+        question.answers.push(answer);
+    }
+    if (wrongAnswer3.value !== "" && wrongUrl3.value !== "") {
+        answer.text = wrongAnswer3.value;
+        answer.image = wrongUrl3.value;
+        question.answers.push(answer);
+    }
+
+    
+
+    // const questionUpdate = formData.questionsForm.indexOf((question) => {
+    //     if (question.questionId === questionAnswers.questionId) {
+    //         return true;
+    //     }
+    // })
 
     // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
-    let indexUpdateQuestion = formData.questionsForm.map((e) => {return e.questionId});
-    indexUpdateQuestion = indexUpdateQuestion.indexOf(questionAnswers.questionId);
-    console.log(indexUpdateQuestion);
+    indexUpdateQuestion = questionIds.indexOf(questionId);
     
     if (indexUpdateQuestion === -1) {
-        formData.questionsForm.push(questionAnswers);
+        questionIds.push(questionId);
+        formData.questions.push(question);
     }
     else {
-        formData.questionsForm[indexUpdateQuestion] = questionAnswers 
+        formData.questions[indexUpdateQuestion] = question
     }
 
     console.log(formData)
@@ -346,7 +365,6 @@ function hasQuestionErrors() {
     for (let i = 0; i < errorMessages.length; i++) {
         const hasError = !errorMessages[i].classList.contains('hidden');
         if (hasError) {
-            alert('Corrija os erros antes de prosseguir');
             return true;
         }
     }
@@ -358,9 +376,13 @@ function hasQuestionErrors() {
 
 let currentLevel;
 function loadLevelsSection() {
+    if (hasQuestionErrors()) { 
+        alert('Preencha os campos obrigatórios corretamente');
+        return; 
+    }
     //primeiro verificar se todas as perguntas constam preenchidas e salvas
     saveQuestion();
-    if (formData.questionsForm.length !== formData.basicInfoForm.qtyQuestions) {
+    if (formData.questions.length !== qtyQuestionsValue) {
         alert('Preencha todas as perguntas antes de prosseguir');
         return;
     }
@@ -371,11 +393,10 @@ function loadLevelsSection() {
     const levelsSection = document.querySelector('.levels-form');
     levelsSection.classList.remove('hidden');
 
-    const qtyLevels = formData.basicInfoForm.qtyLevels;
     const levelsContainer = levelsSection.querySelector('.levels-form .subforms-container');
     levelsContainer.innerHTML = "";
 
-    for (let i = 0; i < qtyLevels; i++) {
+    for (let i = 0; i < qtyLevelsValue; i++) {
         let levelFormModel = 
         `<form action="" id="level-${i+1}">
         <div class="top-question-bar" onclick="toggleLevel(this.parentNode,${i+1})">
@@ -453,30 +474,29 @@ function toggleLevel(newSectionForm, levelIdentifier) {
 
 function saveLevel() {
 
-    const levelAnswers = {
-        levelId: levelId, 
-        levelTitle: levelTitle.value,
-        minPercentage: minPercentage.value,
-        levelImageUrl: levelImageUrl.value,
-        levelDescription: levelDescription.value
+    const level = {
+        title: levelTitle.value,
+        minValue: Number(minPercentage.value),
+        image: levelImageUrl.value,
+        text: levelDescription.value
     }
 
-    const levelUpdate = formData.levelsForm.indexOf(level => {
-        if (level.levelId === levelAnswers.levelId) {
-            return true;
-        }
-    })
+    // const levelUpdate = formData.levelsForm.indexOf(level => {
+    //     if (level.levelId === levelAnswers.levelId) {
+    //         return true;
+    //     }
+    // })
 
     // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
-    let indexUpdateLevel = formData.levelsForm.map(level => {return level.levelId});
-    indexUpdateLevel = indexUpdateLevel.indexOf(levelAnswers.levelId);
+    indexUpdateLevel = levelIds.indexOf(levelId);
     console.log(indexUpdateLevel);
     
     if (indexUpdateLevel === -1) {
-        formData.levelsForm.push(levelAnswers);
+        levelIds.push(levelId);
+        formData.levels.push(level);
     }
     else {
-        formData.levelsForm[indexUpdateLevel] = levelAnswers 
+        formData.levels[indexUpdateLevel] = level 
     }
 
     console.log(formData)
@@ -488,7 +508,6 @@ function hasLevelErrors() {
     for (let i = 0; i < errorMessages.length; i++) {
         const hasError = !errorMessages[i].classList.contains('hidden');
         if (hasError) {
-            alert('Corrija os erros antes de prosseguir');
             return true;
         }
     }
@@ -499,26 +518,36 @@ function hasLevelErrors() {
 }
 
 function loadFormEnd() {
-    //primeiro verificar se todas os niveis constam preenchidos e salvos
+    if (hasLevelErrors()) { return; }
     saveLevel();
-    if (formData.levelsForm.length !== formData.basicInfoForm.qtyLevels) {
-        alert('Preencha todas os níveis antes de prosseguir');
-        return;
-    }
+    //primeiro verificar se todas os niveis constam preenchidos e salvos
+    if (!validateLevelSection()) {return;}
+
 
     const levelsSection = document.querySelector('.levels-form');
     levelsSection.classList.add('hidden');
-    console.log(levelsSection);
 
     const formEndSection = document.querySelector('.quizz-ready');
     formEndSection.classList.remove('hidden');
-    console.log(formEndSection);
 
     const quizzImage = formEndSection.querySelector('.quizz-image img');
-    quizzImage.setAttribute('src',formData.basicInfoForm.quizzImage);
+    quizzImage.setAttribute('src',formData.image);
 
     const quizzTitle = formEndSection.querySelector('.quizz-image p');
-    quizzTitle.innerHTML = formData.basicInfoForm.title;
+    quizzTitle.innerHTML = formData.title;
+
+    uploadNewQuizz();
+}
+
+function uploadNewQuizz() {
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes',formData)
+    .then(res => {
+        console.log(res.data);
+        //podemos acesasr o id com res.data.id
+    })
+    .catch(err => {
+        console.log(err.response)
+    })
 }
 
 const validateTitle = function(e) {
@@ -922,6 +951,23 @@ const validateLevelDescription = function(e) {
             levelDescription.style.border = "2px solid green";
             levelDescriptionError.classList.add("hidden");
     }
+}
+
+function validateLevelSection() {
+    //verifica todos os niveis foram salvos
+    if (formData.levels.length !== qtyLevelsValue) {
+        alert('Preencha todas os níveis antes de prosseguir');
+        return false;
+    }       
+
+    //verifica se tem algum nível 0
+    const hasZero = formData.levels.map(level => {return level.minValue}).indexOf(0);
+    if (hasZero === -1){
+        alert('Insira ao menos um nível cuja porcentagem mínima seja 0');
+        return false;
+    }
+
+    return true;
 }
 
 
