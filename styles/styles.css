@@ -384,8 +384,8 @@ button:hover {
     font-style: italic;
 }
 
-.add-quizz #wrong-url-1, .add-quizz #wrong-url-2 {
-    margin-bottom: 25px;
+.add-quizz #wrong-answer-2, .add-quizz #wrong-answer-3 {
+    margin-top: 25px;
 }
 
 .add-quizz .right, .add-quizz .wrong {

@@ -70,6 +70,18 @@ function getUserQuizzes() {
 
 function changePage(pageId, information){
     const pages = document.querySelectorAll("article");
+
+    const firstForm = pages[2].querySelector('.basic-info-form');
+    const questionForm = pages[2].querySelector('.questions-form');
+    const levelForm = pages[2].querySelector('.levels-form');
+    const lastForm = pages[2].querySelector('.quizz-ready');
+
+    firstForm.classList.remove("hidden");
+    questionForm.classList.add("hidden");
+    levelForm.classList.add("hidden");
+    lastForm.classList.add("hidden");
+
+
     switch (pageId) {
         case 0:
             pages[2].classList.add("hidden");
@@ -87,6 +99,8 @@ function changePage(pageId, information){
             pages[0].classList.add("hidden");
             pages[1].classList.add("hidden");
             pages[2].classList.remove("hidden");
+            resetFormGlobalVars();
+            basicInfoForm();
             break;
     
         default:
@@ -108,10 +122,71 @@ const formData = {
     levels: []
 }
 
+let currentQuestion;
+let questionText;
+let backgroundColorText;
+
+let rightAnswer;
+let urlImageRight;
+
+let wrongAnswer1;
+let wrongUrl1;
+
+let wrongAnswer2;
+let wrongUrl2;
+
+let wrongAnswer3;
+let wrongUrl3;
+
+let questionId = 1;
+let currentLevel;
+
+let levelTitle;
+let minPercentage;
+let levelImageUrl;
+let levelDescription;
+let levelId = 1;
+
+let questionIds= [];
+let levelIds = [];
+
+function resetFormGlobalVars() {
+    currentQuestion = "";
+    questionText = "";
+    backgroundColorText = "";
+
+    rightAnswer = "";
+    urlImageRight = "";
+
+    wrongAnswer1 = "";
+    wrongUrl1 = "";
+
+    wrongAnswer2 = "";
+    wrongUrl2 = "";
+
+    wrongAnswer3 = "";
+    wrongUrl3 = "";
+
+    questionId = 1;
+    currentLevel = "";
+
+    levelTitle = "";
+    minPercentage = 0;
+    levelImageUrl = "";
+    levelDescription = "";
+    levelId = 1;
+
+    questionIds= [];
+    levelIds = [];
+
+    formData.title = "";
+    formData.image = "";
+    formData.questions = [];
+    formData.levels = [];
+}
 function basicInfoForm() {
     const firstForm = document.querySelector('.basic-info-form');
 
-    firstForm.classList.remove('hidden');
     const title = firstForm.querySelector('#title');
     const quizzImage = firstForm.querySelector('#url-quizz-image');
     const qtyQuestions = firstForm.querySelector('#qty-questions');
@@ -153,7 +228,6 @@ function basicInfoForm() {
 
     
 }
-
 
 function loadQuestionsSection() {
     const questionsSection = document.querySelector('.questions-form');
@@ -246,24 +320,6 @@ function listenQuestion() {
 
 }
 
-//form de qual pergunta está sendo preenchida
-let currentQuestion;
-let questionText;
-let backgroundColorText;
-
-let rightAnswer;
-let urlImageRight;
-
-let wrongAnswer1;
-let wrongUrl1;
-
-let wrongAnswer2;
-let wrongUrl2;
-
-let wrongAnswer3;
-let wrongUrl3;
-
-let questionId = 1;
 function toggleQuestion(newSectionForm, questionIdentifier) {
     // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
     if (!hasQuestionErrors()) {
@@ -298,8 +354,7 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
 
     
 }
-const questionIds= [];
-const levelIds = [];
+
 function saveQuestion() {
 
     const question = {
@@ -374,7 +429,6 @@ function hasQuestionErrors() {
     return false;
 }
 
-let currentLevel;
 function loadLevelsSection() {
     if (hasQuestionErrors()) { 
         alert('Preencha os campos obrigatórios corretamente');
@@ -425,11 +479,7 @@ function loadLevelsSection() {
     listenLevel();
 
 }
-let levelTitle;
-let minPercentage;
-let levelImageUrl;
-let levelDescription;
-let levelId = 1;
+
 function listenLevel() {
     currentLevel.classList.add('show');
 
@@ -550,8 +600,14 @@ function uploadNewQuizz() {
         localStorage.setItem("userQuizzIds", userQuizzIds);
     })
     .catch(err => {
-        console.log(err.response)
+        console.log(err.response);
     })
+}
+
+function startNewQuizz() {
+    let userQuizzIds = getUserQuizzes();
+
+    changePage(1,userQuizzIds[userQuizzIds.length-1])
 }
 
 const validateTitle = function(e) {
@@ -973,7 +1029,3 @@ function validateLevelSection() {
 
     return true;
 }
-
-
-basicInfoForm();
-
