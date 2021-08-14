@@ -44,6 +44,7 @@ h2 {
 .home{
     margin: 146px auto;
     width: 1081px;
+    padding-left: 15px;
 }
 .section-title{
     font-size: 20px;
@@ -430,21 +431,15 @@ button:hover {
     /* --- starting Media query of home - Kevin part --- */
     .home{
         margin: 100px auto;
-        width: 100vw;
+        width: 725px;
+    }
+    .user-quizzes{
+        margin-bottom: 35px;
     }
     .user-quizzes .empty {
-        width: 340px;
-        height: 181px;
-        margin: 0 auto;
+        width: 695px;
     }
-    .quizz-box .quizz{
-        margin: 0px auto 10px ;
-    }
-
-    .home .all-quizzes {
-        margin: 20px;
-    }
-    /* --- starting Media query of home - Kevin part --- */
+    /* --- finish Media query of home - Kevin part --- */
     /* --- starting Media query of quizz - Marcos part ---  */
     .banner {
         height: 142px;
@@ -527,4 +522,13 @@ button:hover {
     }
     /* --- finish Media query of add-quizz - Carlos part ---  */
     
+}
+@media (max-width: 725px) {
+    .home{
+        width: 370px;
+        padding-left: 15px;
+    }
+    .user-quizzes .empty {
+        width: 340px;
+    }
 }
