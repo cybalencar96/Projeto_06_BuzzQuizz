@@ -116,6 +116,7 @@ h2 {
     width: 100%;
     height: 100%;
     border-radius: 5px;
+    object-fit: cover;
 }
 .quizz p{
     width: 300px;
@@ -429,7 +430,7 @@ button:hover {
     /* --- starting Media query of home - Kevin part --- */
     .home{
         margin: 100px auto;
-        width: 96vw;
+        width: 100vw;
     }
     .user-quizzes .empty {
         width: 340px;

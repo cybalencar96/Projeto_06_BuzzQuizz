@@ -1,5 +1,52 @@
 const URL_API = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes";
 
+// Home - Kevin part
+requestQuizzes()
+function requestQuizzes() {
+    const promise = axios.get(URL_API)
+    promise.then(renderQuizzes);
+    promise.catch(console.log)
+}
+
+function renderQuizzes(response) {
+    const quizzes = response.data;
+    const allQuizzBox = document.querySelector(".all-quizzes .quizz-box");
+    allQuizzBox.innerHTML = ""
+    for (let i = 0; i < quizzes.length; i++) {
+        allQuizzBox.innerHTML += `<div class="quizz" onclick="changePage(1, ${quizzes[i].id})">
+            <img src="${quizzes[i].image}">
+            <div class="black-gradient"></div>
+            <p>${quizzes[i].title}</p>
+        </div>`;
+    }
+}
+
+function changePage(pageId, information){
+    const pages = document.querySelectorAll("article");
+    switch (pageId) {
+        case 0:
+            pages[2].classList.add("hidden");
+            pages[1].classList.add("hidden");
+            pages[0].classList.remove("hidden");
+            requestQuizzes();
+            break;
+        case 1:
+            pages[2].classList.add("hidden");
+            pages[0].classList.add("hidden");
+            pages[1].classList.remove("hidden");
+            getQuizz(information);
+            break;
+        case 2:
+            pages[0].classList.add("hidden");
+            pages[1].classList.add("hidden");
+            pages[2].classList.remove("hidden");
+            break;
+    
+        default:
+            break;
+    }
+}
+
 // Forms scripts - Carlos part 
 
 const formData = {
