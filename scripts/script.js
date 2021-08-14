@@ -326,8 +326,8 @@ function saveQuestion() {
     })
 
     // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
-    const indexUpdateQuestion = formData.questionsForm.map((e) => {return e.questionId});
-    indexUpdateQuestion.indexOf(questionAnswers.questionId);
+    let indexUpdateQuestion = formData.questionsForm.map((e) => {return e.questionId});
+    indexUpdateQuestion = indexUpdateQuestion.indexOf(questionAnswers.questionId);
     console.log(indexUpdateQuestion);
     
     if (indexUpdateQuestion === -1) {
@@ -351,6 +351,148 @@ function hasQuestionErrors() {
         }
     }
     if (questionText.value === "" || backgroundColorText.value === "" || rightAnswer.value === "" || urlImageRight.value === "" || wrongAnswer1.value ===  "" || wrongUrl1.value === "") {
+        return true;
+    }
+    return false;
+}
+
+let currentLevel;
+function loadLevelsSection() {
+    //primeiro verificar se todas as perguntas constam preenchidas e salvas
+    saveQuestion();
+    if (formData.questionsForm.length !== formData.basicInfoForm.qtyQuestions) {
+        alert('Preencha todas as perguntas antes de prosseguir');
+        return;
+    }
+
+    const questionsSection = document.querySelector('.questions-form');
+    questionsSection.classList.add('hidden');
+
+    const levelsSection = document.querySelector('.levels-form');
+    levelsSection.classList.remove('hidden');
+
+    const qtyLevels = formData.basicInfoForm.qtyLevels;
+    const levelsContainer = levelsSection.querySelector('.levels-form .subforms-container');
+    levelsContainer.innerHTML = "";
+
+    for (let i = 0; i < qtyLevels; i++) {
+        let levelFormModel = 
+        `<form action="" id="level-${i+1}">
+        <div class="top-question-bar" onclick="toggleLevel(this.parentNode,${i+1})">
+            <h3>Nível ${i+1}</h3>
+            <ion-icon name="create-outline"></ion-icon>
+        </div>
+        <div class="question-content">
+            <input type="text" id="level-title" placeholder="Título do nível">
+            <h5 class="level-title-error hidden">Título do nível deve ter no mínimo de 10 caracteres</h5>
+
+            <input type="text" id="min-percentage" placeholder="% de acerto mínima">
+            <h5 class="min-percentage-error hidden">Escolha um numero inteiro entre 0 e 100</h5>
+
+            <input type="text" id="level-url-image" placeholder="URL da imagem do nível">
+            <h5 class="level-image-error hidden">Formato URL inválido</h5>
+            
+            <input type="text" id="level-description" placeholder="Descrição do nível">
+            <h5 class="level-description-error hidden">Descrição do nível deve ter no mínimo 30 caracteres</h5>
+        </div>
+        
+    </form>`;
+        levelsContainer.innerHTML += levelFormModel;
+    }
+
+    currentLevel = document.querySelector(`#level-1`);
+    listenLevel();
+
+}
+let levelTitle;
+let minPercentage;
+let levelImageUrl;
+let levelDescription;
+let levelId = 1;
+function listenLevel() {
+    currentLevel.classList.add('show');
+
+    levelTitle = currentLevel.querySelector('#level-title');
+    minPercentage = currentLevel.querySelector('#min-percentage');
+
+    levelImageUrl = currentLevel.querySelector('#level-url-image');
+    levelDescription = currentLevel.querySelector('#level-description');
+
+
+    levelTitle.addEventListener('keyup', validateLevelTitle);
+    minPercentage.addEventListener('keyup', validateMinPercentage);
+    
+    levelImageUrl.addEventListener('keyup', validateLevelImageUrl);
+    levelDescription.addEventListener('keyup',validateLevelDescription);
+}
+
+function toggleLevel(newSectionForm, levelIdentifier) {
+    // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
+    if (!hasLevelErrors()) {
+        console.log('salva questão')
+        saveLevel();
+        levelTitle.removeEventListener('keyup', validateLevelTitle);
+        minPercentage.removeEventListener('keyup', validateMinPercentage);
+        
+        levelImageUrl.removeEventListener('keyup', validateLevelImageUrl);
+        levelDescription.removeEventListener('keyup',validateLevelDescription);
+
+
+        currentLevel.classList.remove('show');
+        currentLevel = newSectionForm;
+        levelId = levelIdentifier;
+        currentLevel.classList.add('show');
+
+        listenLevel();
+    } 
+    else {
+        alert('Preencha todos os campos obrigatórios corretamente');
+        return;
+    }    
+}
+
+function saveLevel() {
+
+    const levelAnswers = {
+        levelId: levelId, 
+        levelTitle: levelTitle.value,
+        minPercentage: minPercentage.value,
+        levelImageUrl: levelImageUrl.value,
+        levelDescription: levelDescription.value
+    }
+
+    const levelUpdate = formData.levelsForm.indexOf(level => {
+        if (level.levelId === levelAnswers.levelId) {
+            return true;
+        }
+    })
+
+    // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
+    let indexUpdateLevel = formData.levelsForm.map(level => {return level.levelId});
+    indexUpdateLevel = indexUpdateLevel.indexOf(levelAnswers.levelId);
+    console.log(indexUpdateLevel);
+    
+    if (indexUpdateLevel === -1) {
+        formData.levelsForm.push(levelAnswers);
+    }
+    else {
+        formData.levelsForm[indexUpdateLevel] = levelAnswers 
+    }
+
+    console.log(formData)
+}
+
+function hasLevelErrors() {
+    const errorMessages = currentLevel.querySelectorAll('h5');
+
+    for (let i = 0; i < errorMessages.length; i++) {
+        const hasError = !errorMessages[i].classList.contains('hidden');
+        if (hasError) {
+            alert('Corrija os erros antes de prosseguir');
+            return true;
+        }
+    }
+    if (levelTitle.value === "" || levelImageUrl.value === "" || levelDescription.value === "" || minPercentage.value === "") {
         return true;
     }
     return false;
@@ -674,5 +816,89 @@ const validateWrongUrl3 = function(e){
     }
 }
 
+const validateLevelTitle = function(e) {
+    e.preventDefault();
+
+    const levelTitleError = currentLevel.querySelector('.level-title-error');
+    const inputValue = levelTitle.value 
+
+    if (inputValue.length < 10) {
+            if (inputValue === "") {
+                levelTitle.style.border = "1px solid #D1D1D1";
+                levelTitleError.classList.add("hidden");
+                return;
+            }
+            levelTitle.style.border = "2px solid crimson";
+            levelTitleError.classList.remove("hidden");
+    }
+    else {            
+            levelTitle.style.border = "2px solid green";
+            levelTitleError.classList.add("hidden");
+    }
+}
+
+const validateMinPercentage = function(e) {
+    e.preventDefault();
+
+    const minPercentageError = currentLevel.querySelector('.min-percentage-error');
+    const inputValue = minPercentage.value 
+
+    // !inputValue é um truthy ou falsy dependendo se o inputValue veio como numero ou letra
+    if ((!Number(inputValue) && Number(inputValue) !== 0) || !Number.isInteger(Number(inputValue)) || Number(inputValue) < 0 || Number(inputValue) > 100 || inputValue === "") {
+            if (inputValue === "") {
+                minPercentage.style.border = "1px solid #D1D1D1";
+                minPercentageError.classList.add("hidden");
+                return;
+            }
+            minPercentage.style.border = "2px solid crimson";
+            minPercentageError.classList.remove("hidden");
+    }
+    else {            
+            minPercentage.style.border = "2px solid green";
+            minPercentageError.classList.add("hidden");
+    }
+}
+
+const validateLevelImageUrl = function(e) {
+    e.preventDefault();
+
+    const levelImageUrlError = currentLevel.querySelector('.level-image-error');
+    const inputValue = levelImageUrl.value 
+
+    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
+            if (inputValue === "") {
+                levelImageUrl.style.border = "1px solid #D1D1D1";
+                levelImageUrlError.classList.add("hidden");
+                return;
+            }
+            levelImageUrl.style.border = "2px solid crimson";
+            levelImageUrlError.classList.remove("hidden");
+    }
+    else {            
+            levelImageUrl.style.border = "2px solid green";
+            levelImageUrlError.classList.add("hidden");
+    }
+}
+
+const validateLevelDescription = function(e) {
+    e.preventDefault();
+
+    const levelDescriptionError = currentLevel.querySelector('.level-description-error');
+    const inputValue = levelDescription.value;
+
+    if (inputValue.length < 30) {
+            if (inputValue === "") {
+                levelDescription.style.border = "1px solid #D1D1D1";
+                levelDescriptionError.classList.add("hidden");
+                return;
+            }
+            levelDescription.style.border = "2px solid crimson";
+            levelDescriptionError.classList.remove("hidden");
+    }
+    else {            
+            levelDescription.style.border = "2px solid green";
+            levelDescriptionError.classList.add("hidden");
+    }
+}
 basicInfoForm();
 
