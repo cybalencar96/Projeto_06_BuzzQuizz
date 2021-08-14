@@ -543,7 +543,11 @@ function uploadNewQuizz() {
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes',formData)
     .then(res => {
         console.log(res.data);
-        //podemos acesasr o id com res.data.id
+        // att localStorage
+        let userQuizzIds = getUserQuizzes();
+        userQuizzIds.push(res.data.id);
+        userQuizzIds = JSON.stringify(userQuizzIds);
+        localStorage.setItem("userQuizzIds", userQuizzIds);
     })
     .catch(err => {
         console.log(err.response)
