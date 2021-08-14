@@ -334,6 +334,7 @@ button:hover {
 .add-quizz form .top-question-bar ion-icon {
     width: 26px;
     height: 26px;
+    padding: 20px 10px 20px 20px;
 }
 
 .add-quizz .question-content {

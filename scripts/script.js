@@ -239,9 +239,9 @@ function loadQuestionsSection() {
     for (let i = 0; i < qtyQuestionsValue; i++) {
         let questionFormModel = 
         `<form action="" id="question-${i+1}">
-            <div class="top-question-bar" onclick="toggleQuestion(this.parentNode,${i+1})">
+            <div class="top-question-bar" >
                 <h3>Pergunta ${i+1}</h3>
-                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon onclick="toggleQuestion(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
             </div>
             <div class="question-content">
                 <input required type="text" id="question-text" placeholder="Texto da pergunta">
@@ -281,6 +281,7 @@ function loadQuestionsSection() {
     }
 
     currentQuestion = document.querySelector(`#question-1`);
+    currentQuestion.querySelector('ion-icon').classList.add('hidden');
     listenQuestion();
 
 }
@@ -340,8 +341,13 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
         wrongAnswer3.removeEventListener('keyup',validateWrongAnswer3);
         wrongUrl3.removeEventListener('keyup', validateWrongUrl3);
 
+        let editIcon = currentQuestion.querySelector('ion-icon');
+        editIcon.classList.remove('hidden');
         currentQuestion.classList.remove('show');
         currentQuestion = newSectionForm;
+
+        editIcon = currentQuestion.querySelector('ion-icon');
+        editIcon.classList.add('hidden');
         questionId = questionIdentifier;
         currentQuestion.classList.add('show');
 
@@ -453,9 +459,9 @@ function loadLevelsSection() {
     for (let i = 0; i < qtyLevelsValue; i++) {
         let levelFormModel = 
         `<form action="" id="level-${i+1}">
-        <div class="top-question-bar" onclick="toggleLevel(this.parentNode,${i+1})">
+        <div class="top-question-bar" >
             <h3>Nível ${i+1}</h3>
-            <ion-icon name="create-outline"></ion-icon>
+            <ion-icon onclick="toggleLevel(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
         </div>
         <div class="question-content">
             <input type="text" id="level-title" placeholder="Título do nível">
@@ -476,6 +482,7 @@ function loadLevelsSection() {
     }
 
     currentLevel = document.querySelector(`#level-1`);
+    currentLevel.querySelector('ion-icon').classList.add('hidden');
     listenLevel();
 
 }
@@ -508,9 +515,13 @@ function toggleLevel(newSectionForm, levelIdentifier) {
         levelImageUrl.removeEventListener('keyup', validateLevelImageUrl);
         levelDescription.removeEventListener('keyup',validateLevelDescription);
 
-
+        let editIcon = currentLevel.querySelector('ion-icon');
+        editIcon.classList.remove('hidden');
         currentLevel.classList.remove('show');
         currentLevel = newSectionForm;
+
+        editIcon = currentLevel.querySelector('ion-icon');
+        editIcon.classList.add('hidden');
         levelId = levelIdentifier;
         currentLevel.classList.add('show');
 
