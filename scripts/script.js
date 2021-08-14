@@ -13,7 +13,7 @@ function renderQuizzes(response) {
     const allQuizzBox = document.querySelector(".all-quizzes .quizz-box");
     allQuizzBox.innerHTML = ""
     for (let i = 0; i < quizzes.length; i++) {
-        allQuizzBox.innerHTML += `<div class="quizz" onclick="changePage(1, ${quizzes[i].id})">
+        allQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizzes[i].id})">
             <img src="${quizzes[i].image}">
             <div class="black-gradient"></div>
             <p>${quizzes[i].title}</p>
