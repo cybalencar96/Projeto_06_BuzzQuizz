@@ -136,13 +136,16 @@ h2 {
  /* --- Starting quizz - Marcos part --- */
 .banner {
     width: 100%;
-    height: 227px;
+    min-height: 227px;
+    height: 100%;
     background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(https://site.groupe-psa.com/content/uploads/sites/9/2016/12/white-background-2-768x450.jpg);
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 35px;
     margin-top: 69px;
 }
 .quizz-name {
@@ -170,7 +173,8 @@ h2 {
 }
 .question-text {
     width: 100%;
-    height: 138px;
+    min-height: 138px;
+    height: 100%;
     font-size: 23px;
     font-weight: 700;
     background-color: #434CA0;
@@ -178,6 +182,8 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 20px;
     margin-bottom: 25px;
 }
 .alternatives {
@@ -223,7 +229,8 @@ h2 {
 }
 .results-title {
     width: 100%;
-    height: 138px;
+    min-height: 138px;
+    height: 100%;
     font-size: 23px;
     font-weight: 700;
     background-color: #ec362d;
@@ -231,7 +238,10 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 20px;
     margin-bottom: 25px;
+    word-break: break-all;
 }
 .results-image {
     width: 330px;
@@ -240,6 +250,7 @@ h2 {
     width: 330px;
     font-size: 19px;
     font-weight: 700;
+    word-break: break-all;
 }
 .reload-quizz {
     width: 260px;
@@ -444,7 +455,8 @@ button:hover {
     /* --- finish Media query of home - Kevin part --- */
     /* --- starting Media query of quizz - Marcos part ---  */
     .banner {
-        height: 142px;
+        min-height: 142px;
+        padding: 20px;
     }
     .quizz-name {
         font-size: 19px;
@@ -454,11 +466,10 @@ button:hover {
     }
     .question {
         width: 100%;
-        padding: 18px;
+        padding: 20px;
         margin-bottom: 25px;
     }
     .question-text {
-        height: 89px;
         font-size: 19px;
         text-align: center;
         margin-bottom: 25px;
@@ -472,7 +483,7 @@ button:hover {
     }
     .results {
         width: 100%;
-        padding: 18px;
+        padding: 20px;
         flex-direction: column;
         margin: 0px auto 35px auto;
     }
