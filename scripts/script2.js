@@ -2,7 +2,6 @@ let quizz = [];
 let questions = [];
 let correctAnswers = [];
 let qtyCorrectChoices = 0
-let score;
 
 // Se adicionar mais variaveis globais lembre de zerar elas nessa função
 function resetQuizzGame(id){
@@ -110,7 +109,7 @@ function selectAnswer(choice) {
     }
     choice.classList.remove("unchosen");
     verifyAnswer(options, choice);
-    setTimeout(autoScroll, 2000, choice);
+    setTimeout(newAutoScroll, 2000, choice);
 }
 
 function verifyAnswer(options, choice) {
@@ -126,10 +125,15 @@ function verifyAnswer(options, choice) {
     });
 }
 
-function calcPrecision() {
+function calcScore() {
     return ((qtyCorrectChoices / questions.length) * 100).toFixed(0);
 }
 
+// Essa versão tem um bug tenso, como o usuario pode descer a pagina a vontade
+// se ele responder a ultima questão ja é renderizado a resposta.
+// Pra concertar isso teria que ou limitar o usuario a responder as questões em ordem,
+// ou sempre que ele respondesse uma questão verificariamos se todas ja foram respondidas,
+// a newAutoScroll junta tudo em uma coisa só menor e melhor.
 function autoScroll(choice) {
     let DOMQuestions = document.querySelectorAll(".question");
     let question = choice.parentNode.parentNode;
@@ -138,6 +142,7 @@ function autoScroll(choice) {
     for (i = 0; i < DOMQuestions.length; i++) {
         if (DOMQuestions[i] === question) {
             if (i === DOMQuestions.length - 1) {
+                renderResult();
                 document.querySelector(".results").scrollIntoView({block:"center", behavior:"smooth"});
             } else {
                 nextQuestionIndex = i + 1;
@@ -146,4 +151,42 @@ function autoScroll(choice) {
             return;
         }
     }
+}
+
+// Com essa função surge um problema menor, mas ainda existente:
+// - Ela sempre pega a questão não respondida mais acima
+// Da pra fazer uma solução pra esse problema com variavel global
+function newAutoScroll(choice) {
+    let DOMQuestions = document.querySelectorAll(".question");
+    let question = choice.parentNode.parentNode;
+    for (let i = 0; i < DOMQuestions.length; i++) {
+        if (!DOMQuestions[i].lastElementChild.classList.contains("answered")) {
+            DOMQuestions[i].scrollIntoView({block:"center", behavior:"smooth"});
+            return;
+        }
+    }
+    renderResult();
+    document.querySelector(".results").scrollIntoView({block:"center", behavior:"smooth"});
+}
+
+function renderResult() {
+    const results = document.querySelector(".results");
+    const score = calcScore();
+    const level = selectLevel(score);
+    results.innerHTML = `<h3 class="results-title">${score}% de acerto: ${level.title}</h3>
+    <img class="results-image" src="${level.image}">
+    <p class="results-text">${level.text}</p>
+    `
+}
+
+function selectLevel(score) {
+    let currentMin = 0;
+    let currentIndex = 0;
+    quizz.levels.forEach((level, index) => {
+        if (level.minValue <= score && level.minValue >= currentMin){
+            currentMin = level.minValue;
+            currentIndex = index;
+        }
+    });
+    return quizz.levels[currentIndex];
 }
