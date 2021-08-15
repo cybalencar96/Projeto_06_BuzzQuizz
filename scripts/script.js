@@ -70,18 +70,6 @@ function getUserQuizzes() {
 
 function changePage(pageId, information){
     const pages = document.querySelectorAll("article");
-
-    const firstForm = pages[2].querySelector('.basic-info-form');
-    const questionForm = pages[2].querySelector('.questions-form');
-    const levelForm = pages[2].querySelector('.levels-form');
-    const lastForm = pages[2].querySelector('.quizz-ready');
-
-    firstForm.classList.remove("hidden");
-    questionForm.classList.add("hidden");
-    levelForm.classList.add("hidden");
-    lastForm.classList.add("hidden");
-
-
     switch (pageId) {
         case 0:
             pages[2].classList.add("hidden");
@@ -99,10 +87,8 @@ function changePage(pageId, information){
             pages[0].classList.add("hidden");
             pages[1].classList.add("hidden");
             pages[2].classList.remove("hidden");
-            resetFormGlobalVars();
-            basicInfoForm();
+            resetAddQuizz(pages[2]);
             break;
-    
         default:
             pages[0].classList.add("hidden");
             pages[1].classList.add("hidden");
@@ -184,6 +170,16 @@ function resetFormGlobalVars() {
     formData.questions = [];
     formData.levels = [];
 }
+
+function resetAddQuizz(page) {
+    page.querySelector('.basic-info-form').classList.remove("hidden");;
+    page.querySelector('.questions-form').classList.add("hidden");
+    page.querySelector('.levels-form').classList.add("hidden");
+    page.querySelector('.quizz-ready').classList.add("hidden");
+    resetFormGlobalVars()
+    basicInfoForm()
+}
+
 function basicInfoForm() {
     const firstForm = document.querySelector('.basic-info-form');
 
