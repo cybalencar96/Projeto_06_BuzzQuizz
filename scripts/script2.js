@@ -98,8 +98,12 @@ function selectAnswer(choice) {
     let alternativesByQuestion = choice.parentNode;
     let options = alternativesByQuestion.querySelectorAll(".alternative");
 
+    if (alternativesByQuestion.classList.contains("answered")) {
+        return;
+    }
     for (let i = 0; i < options.length; i++) {
         options[i].classList.add("unchosen");
+        alternativesByQuestion.classList.add("answered")
     }
     choice.classList.remove("unchosen");
     verifyAnswer(options);
