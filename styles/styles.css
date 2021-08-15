@@ -176,6 +176,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
+    word-break: break-all;
     padding: 35px;
     margin-top: 69px;
 }
@@ -214,6 +215,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
+    word-break: break-all;
     padding: 20px;
     margin-bottom: 25px;
 }
