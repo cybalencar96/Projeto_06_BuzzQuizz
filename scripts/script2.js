@@ -2,6 +2,7 @@ let quizz = [];
 let questions = [];
 let correctAnswers = [];
 let qtyCorrectChoices = 0
+let score;
 
 // Se adicionar mais variaveis globais lembre de zerar elas nessa função
 function resetQuizzGame(id){
@@ -22,7 +23,7 @@ function resetQuizzGame(id){
     quizz = [];
     questions = [];
     correctAnswers = [];
-    qtyCorrectChoices = 0
+    qtyCorrectChoices = 0;
     getQuizz(id)
 }
 
@@ -109,6 +110,7 @@ function selectAnswer(choice) {
     }
     choice.classList.remove("unchosen");
     verifyAnswer(options, choice);
+    setTimeout(autoScroll, 2000, choice);
 }
 
 function verifyAnswer(options, choice) {
@@ -125,5 +127,23 @@ function verifyAnswer(options, choice) {
 }
 
 function calcPrecision() {
-    return ((qtyCorrectChoices / questions.length) * 100).toFixed(0)
+    return ((qtyCorrectChoices / questions.length) * 100).toFixed(0);
+}
+
+function autoScroll(choice) {
+    let DOMQuestions = document.querySelectorAll(".question");
+    let question = choice.parentNode.parentNode;
+    let nextQuestionIndex = 0;
+
+    for (i = 0; i < DOMQuestions.length; i++) {
+        if (DOMQuestions[i] === question) {
+            if (i === DOMQuestions.length - 1) {
+                document.querySelector(".results").scrollIntoView({block:"center", behavior:"smooth"});
+            } else {
+                nextQuestionIndex = i + 1;
+                DOMQuestions[nextQuestionIndex].scrollIntoView({block:"center", behavior:"smooth"});
+            }
+            return;
+        }
+    }
 }
