@@ -45,6 +45,7 @@ h2 {
     margin: 146px auto;
     width: 1081px;
     padding-left: 15px;
+    overflow-x: hidden;
 }
 .section-title{
     font-size: 20px;
@@ -483,6 +484,7 @@ button:hover {
     .home{
         margin: 100px auto;
         width: 725px;
+        overflow-x: hidden;
     }
     .user-quizzes{
         margin-bottom: 35px;
@@ -574,7 +576,7 @@ button:hover {
     /* --- finish Media query of add-quizz - Carlos part ---  */
     
 }
-@media (max-width: 725px) {
+@media (max-width: 750px) {
     .home{
         width: 370px;
         padding-left: 15px;
