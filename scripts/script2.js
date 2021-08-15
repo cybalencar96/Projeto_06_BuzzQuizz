@@ -1,6 +1,6 @@
 let quizz = [];
 let questions = [];
-let verifyAnswers = [];
+let correctAnswers = [];
 
 // Se adicionar mais variaveis globais lembre de zerar elas nessa função
 function resetQuizzGame(id){
@@ -20,7 +20,7 @@ function resetQuizzGame(id){
     `
     quizz = [];
     questions = [];
-    verifyAnswers = [];
+    correctAnswers = [];
     getQuizz(id)
 }
 
@@ -57,6 +57,7 @@ function renderQuestions() {
 
     let alternative = [];
     let stringAlternatives = ""
+    let altId = 0;
     for (let i = 0; i < questions.length; i++) {
         alternative = [];
         for (let x = 0; x < questions[i].answers.length; x++) {
@@ -64,13 +65,13 @@ function renderQuestions() {
         }
         alternative = alternative.sort(shuffleAlternatives);
         stringAlternatives = "";
-        for (let j = 0; j < alternative.length; j++) {
-            stringAlternatives += `<div class="alternative clickable" onclick="selectAnswer(this);">
+        for (let j = 0; j < alternative.length; j++, altId++) {
+            stringAlternatives += `<div class="alternative clickable" onclick="selectAnswer(this)" id="${altId}">
                 <img class="alternative-image" src="${questions[i].answers[alternative[j]].image}">
                 <span class="alternative-name">${questions[i].answers[alternative[j]].text}</span>
             </div>
             `
-            verifyAnswers.push(questions[i].answers[alternative[j]].isCorrectAnswer);
+            correctAnswers.push(questions[i].answers[alternative[j]].isCorrectAnswer);
         }
         questionsQuizz.innerHTML += `
         <section class="question">
@@ -101,4 +102,15 @@ function selectAnswer(choice) {
         options[i].classList.add("unchosen");
     }
     choice.classList.remove("unchosen");
+    verifyAnswer(options);
+}
+
+function verifyAnswer(options) {
+    options.forEach(element => {
+        if (correctAnswers[element.id]){
+            element.classList.add("correct");
+        }else{
+            element.classList.add("wrong");
+        }
+    });
 }
