@@ -45,17 +45,21 @@ function renderUserQuizzes () {
         const userQuizzBox = document.querySelector(".user-quizzes .quizz-box")
         userQuizzIds.forEach(quizzId => {
             let quizz;
-            const promise = axios.get(URL_API + `/${quizzId}`);
-            promise.then(response => {quizz = response.data
-                userQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizzId})">
-                <img src="${quizz.image}">
-                <div class="black-gradient"></div>
-                <div class="box-edit-exclude">
-                    <ion-icon name="create-outline"></ion-icon>
-                    <ion-icon name="trash-outline"></ion-icon>
-                </div>
-                <p>${quizz.title}</p>
-            </div>`
+            const promise = axios.get(URL_API + `/${quizzId.id}`);
+            promise.then(response => {
+                console.log(quizzId.id,quizzId.auth);
+                quizz = response.data;
+                userQuizzBox.innerHTML += 
+                `<div class="quizz">
+                    <div class="clickable-box clickable" onclick="changePage(1, ${quizzId.id})"></div>
+                    <img src="${quizz.image}">
+                    <div class="black-gradient"></div>
+                    <div class="box-edit-exclude">
+                        <ion-icon onclick="editUserQuizz(${quizzId.id},'${quizzId.auth}')" name="create-outline"></ion-icon>
+                        <ion-icon onclick="deleteUserQuizz(${quizzId.id},'${quizzId.auth}')" name="trash-outline"></ion-icon>
+                    </div>
+                    <p>${quizz.title}</p>
+                </div>`
             });
         });
     }
@@ -529,10 +533,16 @@ function loadFormEnd() {
 function uploadNewQuizz() {
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes',formData)
     .then(res => {
+        console.log(res.data);
         // att localStorage
         let userQuizzIds = getUserQuizzes();
-        userQuizzIds.push(res.data.id);
+        userQuizzIds.push({
+            id: res.data.id,
+            auth: res.data.key
+        });
         userQuizzIds = JSON.stringify(userQuizzIds);
+
+        console.log(userQuizzIds);
         localStorage.setItem("userQuizzIds", userQuizzIds);
     })
     .catch(err => {
@@ -543,4 +553,33 @@ function uploadNewQuizz() {
 function startNewQuizz() {
     let userQuizzIds = getUserQuizzes();
     changePage(1,userQuizzIds[userQuizzIds.length-1])
+}
+
+function deleteUserQuizz(id, auth) {
+    axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes/${id}`, {
+        headers: {
+            'Secret-Key': auth,
+        }
+    })
+    .then(res => {
+        let userQuizzIds = getUserQuizzes();
+        deletedIdIndex = userQuizzIds.map(idsObj => { return idsObj.id }).indexOf(id);
+        console.log(deletedIdIndex)
+        //remove 1 item no indice "deleteIdIndex"
+        userQuizzIds.splice(deletedIdIndex,1);
+        console.log(userQuizzIds);
+        userQuizzIds = JSON.stringify(userQuizzIds);
+        localStorage.setItem("userQuizzIds", userQuizzIds);
+        changePage(0);
+    })
+    .catch(err => {
+        console.log(err.response);
+    });
+
+   
+
+}
+
+function editUserQuizz() {
+
 }

@@ -130,6 +130,15 @@ h2 {
     align-items: center;
 }
 
+.clickable-box {
+    position: absolute;
+    width: 85%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
 .box-edit-exclude ion-icon {
     width: 50%;
     height: 50%;
