@@ -2,6 +2,28 @@ let quizz = [];
 let questions = [];
 let verifyAnswers = [];
 
+// Se adicionar mais variaveis globais lembre de zerar elas nessa função
+function resetQuizzGame(id){
+    const quizzGame = document.querySelector(".quizz-game");
+    quizzGame.innerHTML = `<div class="banner">
+    </div>
+    <main class="questions">
+        <section class="question">
+            <div class="alternatives">
+            </div>
+        </section>
+    </main>
+    <section class="results">
+    </section>
+    <button class="reload-quizz" onclick="changePage(1, ${id})">Reiniciar Quizz</button>
+    <button class="back-home" onclick="changePage(0)">Voltar para Home</button>
+    `
+    quizz = [];
+    questions = [];
+    verifyAnswers = [];
+    getQuizz(id)
+}
+
 function getQuizz(id) {
     const promise = axios.get(URL_API + `/${id}`);
     promise.then(listQuizz);

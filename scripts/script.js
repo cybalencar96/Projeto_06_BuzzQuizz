@@ -93,7 +93,7 @@ function changePage(pageId, information){
             pages[2].classList.add("hidden");
             pages[0].classList.add("hidden");
             pages[1].classList.remove("hidden");
-            getQuizz(information);
+            resetQuizzGame(information);
             break;
         case 2:
             pages[0].classList.add("hidden");
