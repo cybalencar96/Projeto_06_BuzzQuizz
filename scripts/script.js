@@ -70,6 +70,18 @@ function getUserQuizzes() {
 
 function changePage(pageId, information){
     const pages = document.querySelectorAll("article");
+
+    const firstForm = pages[2].querySelector('.basic-info-form');
+    const questionForm = pages[2].querySelector('.questions-form');
+    const levelForm = pages[2].querySelector('.levels-form');
+    const lastForm = pages[2].querySelector('.quizz-ready');
+
+    firstForm.classList.remove("hidden");
+    questionForm.classList.add("hidden");
+    levelForm.classList.add("hidden");
+    lastForm.classList.add("hidden");
+
+
     switch (pageId) {
         case 0:
             pages[2].classList.add("hidden");
@@ -87,6 +99,8 @@ function changePage(pageId, information){
             pages[0].classList.add("hidden");
             pages[1].classList.add("hidden");
             pages[2].classList.remove("hidden");
+            resetFormGlobalVars();
+            basicInfoForm();
             break;
     
         default:
@@ -108,10 +122,71 @@ const formData = {
     levels: []
 }
 
+let currentQuestion;
+let questionText;
+let backgroundColorText;
+
+let rightAnswer;
+let urlImageRight;
+
+let wrongAnswer1;
+let wrongUrl1;
+
+let wrongAnswer2;
+let wrongUrl2;
+
+let wrongAnswer3;
+let wrongUrl3;
+
+let questionId = 1;
+let currentLevel;
+
+let levelTitle;
+let minPercentage;
+let levelImageUrl;
+let levelDescription;
+let levelId = 1;
+
+let questionIds= [];
+let levelIds = [];
+
+function resetFormGlobalVars() {
+    currentQuestion = "";
+    questionText = "";
+    backgroundColorText = "";
+
+    rightAnswer = "";
+    urlImageRight = "";
+
+    wrongAnswer1 = "";
+    wrongUrl1 = "";
+
+    wrongAnswer2 = "";
+    wrongUrl2 = "";
+
+    wrongAnswer3 = "";
+    wrongUrl3 = "";
+
+    questionId = 1;
+    currentLevel = "";
+
+    levelTitle = "";
+    minPercentage = 0;
+    levelImageUrl = "";
+    levelDescription = "";
+    levelId = 1;
+
+    questionIds= [];
+    levelIds = [];
+
+    formData.title = "";
+    formData.image = "";
+    formData.questions = [];
+    formData.levels = [];
+}
 function basicInfoForm() {
     const firstForm = document.querySelector('.basic-info-form');
 
-    firstForm.classList.remove('hidden');
     const title = firstForm.querySelector('#title');
     const quizzImage = firstForm.querySelector('#url-quizz-image');
     const qtyQuestions = firstForm.querySelector('#qty-questions');
@@ -154,7 +229,6 @@ function basicInfoForm() {
     
 }
 
-
 function loadQuestionsSection() {
     const questionsSection = document.querySelector('.questions-form');
     questionsSection.classList.remove('hidden');
@@ -165,9 +239,9 @@ function loadQuestionsSection() {
     for (let i = 0; i < qtyQuestionsValue; i++) {
         let questionFormModel = 
         `<form action="" id="question-${i+1}">
-            <div class="top-question-bar" onclick="toggleQuestion(this.parentNode,${i+1})">
+            <div class="top-question-bar" >
                 <h3>Pergunta ${i+1}</h3>
-                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon onclick="toggleQuestion(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
             </div>
             <div class="question-content">
                 <input required type="text" id="question-text" placeholder="Texto da pergunta">
@@ -207,6 +281,7 @@ function loadQuestionsSection() {
     }
 
     currentQuestion = document.querySelector(`#question-1`);
+    currentQuestion.querySelector('ion-icon').classList.add('hidden');
     listenQuestion();
 
 }
@@ -246,24 +321,6 @@ function listenQuestion() {
 
 }
 
-//form de qual pergunta está sendo preenchida
-let currentQuestion;
-let questionText;
-let backgroundColorText;
-
-let rightAnswer;
-let urlImageRight;
-
-let wrongAnswer1;
-let wrongUrl1;
-
-let wrongAnswer2;
-let wrongUrl2;
-
-let wrongAnswer3;
-let wrongUrl3;
-
-let questionId = 1;
 function toggleQuestion(newSectionForm, questionIdentifier) {
     // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
     if (!hasQuestionErrors()) {
@@ -284,8 +341,13 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
         wrongAnswer3.removeEventListener('keyup',validateWrongAnswer3);
         wrongUrl3.removeEventListener('keyup', validateWrongUrl3);
 
+        let editIcon = currentQuestion.querySelector('ion-icon');
+        editIcon.classList.remove('hidden');
         currentQuestion.classList.remove('show');
         currentQuestion = newSectionForm;
+
+        editIcon = currentQuestion.querySelector('ion-icon');
+        editIcon.classList.add('hidden');
         questionId = questionIdentifier;
         currentQuestion.classList.add('show');
 
@@ -298,8 +360,7 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
 
     
 }
-const questionIds= [];
-const levelIds = [];
+
 function saveQuestion() {
 
     const question = {
@@ -374,7 +435,6 @@ function hasQuestionErrors() {
     return false;
 }
 
-let currentLevel;
 function loadLevelsSection() {
     if (hasQuestionErrors()) { 
         alert('Preencha os campos obrigatórios corretamente');
@@ -399,9 +459,9 @@ function loadLevelsSection() {
     for (let i = 0; i < qtyLevelsValue; i++) {
         let levelFormModel = 
         `<form action="" id="level-${i+1}">
-        <div class="top-question-bar" onclick="toggleLevel(this.parentNode,${i+1})">
+        <div class="top-question-bar" >
             <h3>Nível ${i+1}</h3>
-            <ion-icon name="create-outline"></ion-icon>
+            <ion-icon onclick="toggleLevel(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
         </div>
         <div class="question-content">
             <input type="text" id="level-title" placeholder="Título do nível">
@@ -422,14 +482,11 @@ function loadLevelsSection() {
     }
 
     currentLevel = document.querySelector(`#level-1`);
+    currentLevel.querySelector('ion-icon').classList.add('hidden');
     listenLevel();
 
 }
-let levelTitle;
-let minPercentage;
-let levelImageUrl;
-let levelDescription;
-let levelId = 1;
+
 function listenLevel() {
     currentLevel.classList.add('show');
 
@@ -458,9 +515,13 @@ function toggleLevel(newSectionForm, levelIdentifier) {
         levelImageUrl.removeEventListener('keyup', validateLevelImageUrl);
         levelDescription.removeEventListener('keyup',validateLevelDescription);
 
-
+        let editIcon = currentLevel.querySelector('ion-icon');
+        editIcon.classList.remove('hidden');
         currentLevel.classList.remove('show');
         currentLevel = newSectionForm;
+
+        editIcon = currentLevel.querySelector('ion-icon');
+        editIcon.classList.add('hidden');
         levelId = levelIdentifier;
         currentLevel.classList.add('show');
 
@@ -550,8 +611,14 @@ function uploadNewQuizz() {
         localStorage.setItem("userQuizzIds", userQuizzIds);
     })
     .catch(err => {
-        console.log(err.response)
+        console.log(err.response);
     })
+}
+
+function startNewQuizz() {
+    let userQuizzIds = getUserQuizzes();
+
+    changePage(1,userQuizzIds[userQuizzIds.length-1])
 }
 
 const validateTitle = function(e) {
@@ -973,7 +1040,3 @@ function validateLevelSection() {
 
     return true;
 }
-
-
-basicInfoForm();
-
