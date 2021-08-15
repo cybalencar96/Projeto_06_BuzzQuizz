@@ -50,6 +50,10 @@ function renderUserQuizzes () {
                 userQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizzId})">
                 <img src="${quizz.image}">
                 <div class="black-gradient"></div>
+                <div class="box-edit-exclude">
+                    <ion-icon name="create-outline"></ion-icon>
+                    <ion-icon name="trash-outline"></ion-icon>
+                </div>
                 <p>${quizz.title}</p>
             </div>`
             });

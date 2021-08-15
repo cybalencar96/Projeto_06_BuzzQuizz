@@ -7,24 +7,42 @@ const validateFirstForm = e => {
     validateQtyLevels();
 }
 
+const validateCurrentQuestion = e => {
+    e.preventDefault();
+    validateQuestionText();
+    validateBackgroudColorText();
+    validateAnswers();  
+}
+
+const validateCurrentLevel = e => {
+    e.preventDefault();
+    validateLevelTitle();
+    validateMinPercentage();
+    validateLevelImageUrl();
+    validateLevelDescription();
+}
+
 function checkRule(element, elementError, rule) {
     if (element.value === "") {
             element.style.border = "1px solid #D1D1D1";
+            element.style.backgroundColor = "#FFFFFF"
             elementError.classList.add("hidden");
 
     } else {
         if (rule) {
+            element.style.backgroundColor = "#FFE9E9"
             element.style.border = "2px solid crimson";
             elementError.classList.remove("hidden");
         }
         else {            
+            element.style.backgroundColor = "#CAFFC0"
             element.style.border = "2px solid green";
             elementError.classList.add("hidden");
+
         }
     }
     
 }
-
 
 function validateTitle() {
     const title = document.querySelector('.basic-info-form #title');
@@ -53,13 +71,6 @@ function validateQtyLevels() {
     const qtyLevelsError = document.querySelector(".basic-info-form .qty-levels-error");
     const condition = !Number(qtyLevels.value) || Number(qtyLevels.value) < 2 || !Number.isInteger(Number(qtyLevels.value)) ;  
     checkRule(qtyLevels,qtyLevelsError,condition);
-}
-
-const validateCurrentQuestion = e => {
-    e.preventDefault();
-    validateQuestionText();
-    validateBackgroudColorText();
-    validateAnswers();  
 }
 
 function validateQuestionText() {
@@ -107,13 +118,6 @@ function validateAnswers() {
     }
 }
 
-const validateCurrentLevel = e => {
-    e.preventDefault();
-    validateLevelTitle();
-    validateMinPercentage();
-    validateLevelImageUrl();
-    validateLevelDescription();
-}
 
 function validateLevelTitle() {
     const levelTitleError = currentLevel.querySelector('.level-title-error');
