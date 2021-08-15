@@ -207,6 +207,7 @@ h2 {
     font-size: 20px;
     font-weight: 700;
     line-height: 30px;
+    word-break: break-all;
 }
 .results {
     width: 759px;
