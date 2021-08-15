@@ -184,6 +184,7 @@ function resetFormGlobalVars() {
     formData.questions = [];
     formData.levels = [];
 }
+
 function basicInfoForm() {
     const firstForm = document.querySelector('.basic-info-form');
 
@@ -192,11 +193,8 @@ function basicInfoForm() {
     const qtyQuestions = firstForm.querySelector('#qty-questions');
     const qtyLevels = firstForm.querySelector('#qty-levels');
 
-    title.addEventListener('keyup', validateTitle);
-    quizzImage.addEventListener('keyup', validateQuizzImage);
-    qtyQuestions.addEventListener('keyup', validateQtyQuestions);
-    qtyLevels.addEventListener('keyup', validateQtyLevels);
-    
+    firstForm.addEventListener('keyup',validateFirstForm);
+
     const buttonNextForm = firstForm.querySelector('button');
 
     const verifyErrors = function(e) {
@@ -214,19 +212,17 @@ function basicInfoForm() {
                 return;
             }
         }
-
         formData.title = title.value;
         formData.image = quizzImage.value;
         qtyQuestionsValue = Number(qtyQuestions.value);
         qtyLevelsValue = Number(qtyLevels.value);
+
         buttonNextForm.removeEventListener('click', verifyErrors);
+        firstForm.removeEventListener('keyup',validateFirstForm);
         firstForm.classList.add('hidden');
         loadQuestionsSection();
     }
-
     buttonNextForm.addEventListener('click', verifyErrors);
-
-    
 }
 
 function loadQuestionsSection() {
@@ -279,11 +275,9 @@ function loadQuestionsSection() {
         </form>`;
         questionsContainer.innerHTML += questionFormModel;
     }
-
     currentQuestion = document.querySelector(`#question-1`);
     currentQuestion.querySelector('ion-icon').classList.add('hidden');
     listenQuestion();
-
 }
 
 function listenQuestion() {
@@ -304,65 +298,36 @@ function listenQuestion() {
     wrongAnswer3 = currentQuestion.querySelector('#wrong-answer-3');
     wrongUrl3 = currentQuestion.querySelector('#wrong-url-3');
 
-    questionText.addEventListener('keyup', validateQuestionText);
-    backgroundColorText.addEventListener('keyup', validateBackgroudColorText);
-    
-    rightAnswer.addEventListener('keyup', validateRightAnswer);
-    urlImageRight.addEventListener('keyup',validateRightUrlImage);
-
-    wrongAnswer1.addEventListener('keyup',validateWrongAnswer1);
-    wrongUrl1.addEventListener('keyup', validateWrongUrl1);
-
-    wrongAnswer2.addEventListener('keyup',validateWrongAnswer2);
-    wrongUrl2.addEventListener('keyup', validateWrongUrl2);
-
-    wrongAnswer3.addEventListener('keyup',validateWrongAnswer3);
-    wrongUrl3.addEventListener('keyup', validateWrongUrl3);
-
+    currentQuestion.addEventListener('keyup',validateCurrentQuestion);
 }
 
 function toggleQuestion(newSectionForm, questionIdentifier) {
     // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
     if (!hasQuestionErrors()) {
-        console.log('salva questão')
         saveQuestion();
         questionText.removeEventListener('keyup', validateQuestionText);
         backgroundColorText.removeEventListener('keyup', validateBackgroudColorText);
         
-        rightAnswer.removeEventListener('keyup', validateRightAnswer);
-        urlImageRight.removeEventListener('keyup',validateRightUrlImage);
-
-        wrongAnswer1.removeEventListener('keyup',validateWrongAnswer1);
-        wrongUrl1.removeEventListener('keyup', validateWrongUrl1);
-
-        wrongAnswer2.removeEventListener('keyup',validateWrongAnswer2);
-        wrongUrl2.removeEventListener('keyup', validateWrongUrl2);
-
-        wrongAnswer3.removeEventListener('keyup',validateWrongAnswer3);
-        wrongUrl3.removeEventListener('keyup', validateWrongUrl3);
-
         let editIcon = currentQuestion.querySelector('ion-icon');
         editIcon.classList.remove('hidden');
         currentQuestion.classList.remove('show');
+        currentQuestion.removeEventListener('keyup',validateCurrentQuestion);
+
         currentQuestion = newSectionForm;
 
         editIcon = currentQuestion.querySelector('ion-icon');
         editIcon.classList.add('hidden');
         questionId = questionIdentifier;
         currentQuestion.classList.add('show');
-
         listenQuestion();
     } 
     else {
         alert('Preencha todos os campos obrigatórios corretamente');
         return;
     }
-
-    
 }
 
 function saveQuestion() {
-
     const question = {
         title: questionText.value,
         color: backgroundColorText.value,
@@ -378,8 +343,6 @@ function saveQuestion() {
                 isCorrectAnswer: false
             }
         ]
-
-
     }
 
     const answer = {
@@ -398,26 +361,13 @@ function saveQuestion() {
         question.answers.push(answer);
     }
 
-    
-
-    // const questionUpdate = formData.questionsForm.indexOf((question) => {
-    //     if (question.questionId === questionAnswers.questionId) {
-    //         return true;
-    //     }
-    // })
-
-    // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
     indexUpdateQuestion = questionIds.indexOf(questionId);
     
     if (indexUpdateQuestion === -1) {
         questionIds.push(questionId);
         formData.questions.push(question);
     }
-    else {
-        formData.questions[indexUpdateQuestion] = question
-    }
-
-    console.log(formData)
+    else { formData.questions[indexUpdateQuestion] = question }
 }
 
 function hasQuestionErrors() {
@@ -436,17 +386,17 @@ function hasQuestionErrors() {
 }
 
 function loadLevelsSection() {
+    //primeiro verificar se todas as perguntas constam preenchidas e salvas
     if (hasQuestionErrors()) { 
         alert('Preencha os campos obrigatórios corretamente');
         return; 
     }
-    //primeiro verificar se todas as perguntas constam preenchidas e salvas
     saveQuestion();
     if (formData.questions.length !== qtyQuestionsValue) {
         alert('Preencha todas as perguntas antes de prosseguir');
         return;
     }
-
+    currentQuestion.removeEventListener('keyup',validateCurrentQuestion);
     const questionsSection = document.querySelector('.questions-form');
     questionsSection.classList.add('hidden');
 
@@ -480,11 +430,9 @@ function loadLevelsSection() {
     </form>`;
         levelsContainer.innerHTML += levelFormModel;
     }
-
     currentLevel = document.querySelector(`#level-1`);
     currentLevel.querySelector('ion-icon').classList.add('hidden');
     listenLevel();
-
 }
 
 function listenLevel() {
@@ -496,35 +444,25 @@ function listenLevel() {
     levelImageUrl = currentLevel.querySelector('#level-url-image');
     levelDescription = currentLevel.querySelector('#level-description');
 
-
-    levelTitle.addEventListener('keyup', validateLevelTitle);
-    minPercentage.addEventListener('keyup', validateMinPercentage);
-    
-    levelImageUrl.addEventListener('keyup', validateLevelImageUrl);
-    levelDescription.addEventListener('keyup',validateLevelDescription);
+    currentLevel.addEventListener('keyup',validateCurrentLevel);
 }
 
 function toggleLevel(newSectionForm, levelIdentifier) {
     // antes de mostrar novo form, validar e salvar infos do ultimo preenchido
     if (!hasLevelErrors()) {
-        console.log('salva questão')
         saveLevel();
-        levelTitle.removeEventListener('keyup', validateLevelTitle);
-        minPercentage.removeEventListener('keyup', validateMinPercentage);
-        
-        levelImageUrl.removeEventListener('keyup', validateLevelImageUrl);
-        levelDescription.removeEventListener('keyup',validateLevelDescription);
 
         let editIcon = currentLevel.querySelector('ion-icon');
         editIcon.classList.remove('hidden');
         currentLevel.classList.remove('show');
+        currentLevel.removeEventListener('keyup',validateCurrentLevel);
+
         currentLevel = newSectionForm;
 
         editIcon = currentLevel.querySelector('ion-icon');
         editIcon.classList.add('hidden');
         levelId = levelIdentifier;
         currentLevel.classList.add('show');
-
         listenLevel();
     } 
     else {
@@ -534,33 +472,19 @@ function toggleLevel(newSectionForm, levelIdentifier) {
 }
 
 function saveLevel() {
-
     const level = {
         title: levelTitle.value,
         minValue: Number(minPercentage.value),
         image: levelImageUrl.value,
         text: levelDescription.value
     }
-
-    // const levelUpdate = formData.levelsForm.indexOf(level => {
-    //     if (level.levelId === levelAnswers.levelId) {
-    //         return true;
-    //     }
-    // })
-
-    // transforma um array de objetos em um array de ids, depois procura id novo vericando se ja existe, e retorna o index ou -1
     indexUpdateLevel = levelIds.indexOf(levelId);
-    console.log(indexUpdateLevel);
-    
+
     if (indexUpdateLevel === -1) {
         levelIds.push(levelId);
         formData.levels.push(level);
     }
-    else {
-        formData.levels[indexUpdateLevel] = level 
-    }
-
-    console.log(formData)
+    else { formData.levels[indexUpdateLevel] = level }
 }
 
 function hasLevelErrors() {
@@ -579,12 +503,15 @@ function hasLevelErrors() {
 }
 
 function loadFormEnd() {
-    if (hasLevelErrors()) { return; }
+    if (hasLevelErrors()) { 
+        alert('Preencha os campos obrigatórios corretamente');
+        return; 
+    }
     saveLevel();
     //primeiro verificar se todas os niveis constam preenchidos e salvos
-    if (!validateLevelSection()) {return;}
+    if (!validateLevelSection()) { return; }
 
-
+    currentLevel.removeEventListener('keyup',validateCurrentLevel);
     const levelsSection = document.querySelector('.levels-form');
     levelsSection.classList.add('hidden');
 
@@ -603,7 +530,6 @@ function loadFormEnd() {
 function uploadNewQuizz() {
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes',formData)
     .then(res => {
-        console.log(res.data);
         // att localStorage
         let userQuizzIds = getUserQuizzes();
         userQuizzIds.push(res.data.id);
@@ -617,411 +543,148 @@ function uploadNewQuizz() {
 
 function startNewQuizz() {
     let userQuizzIds = getUserQuizzes();
-
     changePage(1,userQuizzIds[userQuizzIds.length-1])
 }
 
-const validateTitle = function(e) {
+const validateFirstForm = e => {
     e.preventDefault();
 
-    const firstForm = document.querySelector('.basic-info-form');
-    const title = firstForm.querySelector('#title');
-    const titleError = firstForm.querySelector(".title-error");
-
-    if (title.value.length < 20 || title.value.length > 65) {
-        if (title.value === "") {
-            title.style.border = "1px solid #D1D1D1";
-            titleError.classList.add("hidden");
-            return;
-        }
-        title.style.border = "2px solid crimson";
-        titleError.classList.remove("hidden");
-    }
-    else {            
-        title.style.border = "2px solid green";
-        titleError.classList.add("hidden");
-    }
+    validateTitle();
+    validateQuizzImage();
+    validateQtyQuestions();
+    validateQtyLevels();
 }
 
-const validateQuizzImage = function(e) {
-    e.preventDefault();
+function checkRule(element, elementError, rule) {
+    if (element.value === "") {
+            element.style.border = "1px solid #D1D1D1";
+            elementError.classList.add("hidden");
 
-    const firstForm = document.querySelector('.basic-info-form');
-    const quizzImage = firstForm.querySelector('#url-quizz-image');
-    const quizzImageError = firstForm.querySelector(".url-error");
+    } else {
+        if (rule) {
+            element.style.border = "2px solid crimson";
+            elementError.classList.remove("hidden");
+        }
+        else {            
+            element.style.border = "2px solid green";
+            elementError.classList.add("hidden");
+        }
+    }
     
-
-    if (quizzImage.value.length < 5 || quizzImage.value.substring(0,8) !== "https://") {
-        if (quizzImage.value === "") {
-            quizzImage.style.border = "1px solid #D1D1D1";
-            quizzImageError.classList.add("hidden");
-            return;
-        }
-        quizzImage.style.border = "2px solid crimson";
-        quizzImageError.classList.remove("hidden");
-    }
-    else {            
-        quizzImage.style.border = "2px solid green";
-        quizzImageError.classList.add("hidden");
-    }
 }
 
-const validateQtyQuestions = function(e) {
-    e.preventDefault();
+function validateTitle() {
+    const title = document.querySelector('.basic-info-form #title');
+    const titleError = document.querySelector(".basic-info-form .title-error");
+    const condition = title.value.length < 20 || title.value.length > 65;
 
-    const firstForm = document.querySelector('.basic-info-form');
-    const qtyQuestions = firstForm.querySelector('#qty-questions');
-    const qtyQuestionsError = firstForm.querySelector(".qty-questions-error");
-
-    if (!Number(qtyQuestions.value) || Number(qtyQuestions.value) < 3 || !Number.isInteger(Number(qtyQuestions.value)) ) {
-        if (qtyQuestions.value === "") {
-            qtyQuestions.style.border = "1px solid #D1D1D1";
-            qtyQuestionsError.classList.add("hidden");
-            return;
-        }
-        qtyQuestions.style.border = "2px solid crimson";
-        qtyQuestionsError.classList.remove("hidden");
-    }
-    else {            
-        qtyQuestions.style.border = "2px solid green";
-        qtyQuestionsError.classList.add("hidden");
-    }
+    checkRule(title,titleError,condition);
 }
 
-const validateQtyLevels = function(e) {
-    e.preventDefault();
-
-    const firstForm = document.querySelector('.basic-info-form');
-    const qtyLevels = firstForm.querySelector('#qty-levels');
-    const qtyLevelsError = firstForm.querySelector(".qty-levels-error");
-
-    if (!Number(qtyLevels.value) || Number(qtyLevels.value) < 2 || !Number.isInteger(Number(qtyLevels.value)) ) {
-        if (qtyLevels.value === "") {
-            qtyLevels.style.border = "1px solid #D1D1D1";
-            qtyLevelsError.classList.add("hidden");
-            return;
-        }
-        qtyLevels.style.border = "2px solid crimson";
-        qtyLevelsError.classList.remove("hidden");
-    }
-    else {            
-        qtyLevels.style.border = "2px solid green";
-        qtyLevelsError.classList.add("hidden");
-    }
+function validateQuizzImage() {
+    const quizzImage = document.querySelector('.basic-info-form #url-quizz-image');
+    const quizzImageError = document.querySelector(".basic-info-form .url-error");
+    const condition = quizzImage.value.length < 5 || quizzImage.value.substring(0,8) !== "https://";
+    checkRule(quizzImage,quizzImageError, condition)
 }
 
-const validateQuestionText = function(e){
-    e.preventDefault();
+function validateQtyQuestions() {
+    const qtyQuestions = document.querySelector('.basic-info-form #qty-questions');
+    const qtyQuestionsError = document.querySelector(".basic-info-form .qty-questions-error");
+    const condition = !Number(qtyQuestions.value) || Number(qtyQuestions.value) < 3 || !Number.isInteger(Number(qtyQuestions.value));    
+    checkRule(qtyQuestions,qtyQuestionsError,condition);
+}
 
+function validateQtyLevels() {
+    const qtyLevels = document.querySelector('.basic-info-form #qty-levels');
+    const qtyLevelsError = document.querySelector(".basic-info-form .qty-levels-error");
+    const condition = !Number(qtyLevels.value) || Number(qtyLevels.value) < 2 || !Number.isInteger(Number(qtyLevels.value)) ;  
+    checkRule(qtyLevels,qtyLevelsError,condition);
+}
+
+const validateCurrentQuestion = e => {
+    e.preventDefault();
+    validateQuestionText();
+    validateBackgroudColorText();
+    validateAnswers();  
+}
+
+function validateQuestionText() {
     const questionText = currentQuestion.querySelector('#question-text');
     const questionTextError = currentQuestion.querySelector('.question-text-error');
-
-    if (questionText.value.length < 20) {
-            if (questionText.value === "") {
-                questionText.style.border = "1px solid #D1D1D1";
-                questionTextError.classList.add("hidden");
-                return;
-            }
-            questionText.style.border = "2px solid crimson";
-            questionTextError.classList.remove("hidden");
-    }
-    else {            
-            questionText.style.border = "2px solid green";
-            questionTextError.classList.add("hidden");
-    }
+    const condition = questionText.value.length < 20;
+    checkRule(questionText, questionTextError, condition);
 }
 
-const validateBackgroudColorText = function(e) {
-    e.preventDefault();
-
-
+function validateBackgroudColorText() {
     const backgroundColorText = currentQuestion.querySelector('#background-color-text');
     const backgroundColorTextError = currentQuestion.querySelector('.background-text-error');
     const inputValue = backgroundColorText.value;
     const hexa = "#0123456789ABCDEF";
-
     let invalidHexa = false;
 
      for (let i = 0; i < inputValue.length; i++) {
-         if (hexa.indexOf(inputValue[i]) === -1) {
-             invalidHexa = true;
-         }
+         if (hexa.indexOf(inputValue[i]) === -1) { invalidHexa = true; }
      }
-    if (inputValue === "" || inputValue[0] !== "#" || inputValue.length !== 7 || invalidHexa ) {
-            if (inputValue === "") {
-                backgroundColorText.style.border = "1px solid #D1D1D1";
-                backgroundColorTextError.classList.add("hidden");
-                return;
-            }
-            backgroundColorText.style.border = "2px solid crimson";
-            backgroundColorTextError.classList.remove("hidden");
-    }
-    else {            
-            backgroundColorText.style.border = "2px solid green";
-            backgroundColorTextError.classList.add("hidden");
-    }
+
+     const condition = inputValue === "" || inputValue[0] !== "#" || inputValue.length !== 7 || invalidHexa;
+     checkRule(backgroundColorText,backgroundColorTextError,condition);
 }
 
-const validateRightAnswer = function(e){
-    e.preventDefault();
-
-    const rightAnswer = currentQuestion.querySelector('#right-answer');
+function validateAnswers() {
     const rightAnswerError = currentQuestion.querySelector('.right-answer-error');
-    const inputValue = rightAnswer.value 
-
-    if (inputValue === "") {
-            if (inputValue === "") {
-                rightAnswer.style.border = "1px solid #D1D1D1";
-                rightAnswerError.classList.add("hidden");
-                return;
-            }
-            rightAnswer.style.border = "2px solid crimson";
-            rightAnswerError.classList.remove("hidden");
-    }
-    else {            
-            rightAnswer.style.border = "2px solid green";
-            rightAnswerError.classList.add("hidden");
-    }
-
-}
-
-const validateRightUrlImage = function(e) {
-    e.preventDefault();
-
-    const urlImageRight = currentQuestion.querySelector('#url-image-right');
     const urlImageRightError = currentQuestion.querySelector('.image-right-error');
-    const inputValue = urlImageRight.value 
-
-    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
-            if (inputValue === "") {
-                urlImageRight.style.border = "1px solid #D1D1D1";
-                urlImageRightError.classList.add("hidden");
-                return;
-            }
-            urlImageRight.style.border = "2px solid crimson";
-            urlImageRightError.classList.remove("hidden");
-    }
-    else {            
-            urlImageRight.style.border = "2px solid green";
-            urlImageRightError.classList.add("hidden");
-    }
-}
-
-const validateWrongAnswer1 = function(e) {
-    e.preventDefault();
-
-    const wrongAnswer1 = currentQuestion.querySelector('#wrong-answer-1');
     const wrongAnswer1Error = currentQuestion.querySelector('.wrong-answer1-error');
-    const inputValue = wrongAnswer1.value 
-
-    if (inputValue === "") {
-            if (inputValue === "") {
-                wrongAnswer1.style.border = "1px solid #D1D1D1";
-                wrongAnswer1Error.classList.add("hidden");
-                return;
-            }
-            wrongAnswer1.style.border = "2px solid crimson";
-            wrongAnswer1Error.classList.remove("hidden");
-    }
-    else {            
-            wrongAnswer1.style.border = "2px solid green";
-            wrongAnswer1Error.classList.add("hidden");
-    }
-}
-
-const validateWrongAnswer2 = function(e) {
-    e.preventDefault();
-
-    const wrongAnswer2 = currentQuestion.querySelector('#wrong-answer-2');
     const wrongAnswer2Error = currentQuestion.querySelector('.wrong-answer2-error');
-    const inputValue = wrongAnswer2.value 
-
-    if (inputValue === "") {
-            if (inputValue === "") {
-                wrongAnswer2.style.border = "1px solid #D1D1D1";
-                wrongAnswer2Error.classList.add("hidden");
-                return;
-            }
-            wrongAnswer2.style.border = "2px solid crimson";
-            wrongAnswer2Error.classList.remove("hidden");
-    }
-    else {            
-            wrongAnswer2.style.border = "2px solid green";
-            wrongAnswer2Error.classList.add("hidden");
-    }
-}
-
-const validateWrongAnswer3 = function(e) {
-    e.preventDefault();
-
-    const wrongAnswer3 = currentQuestion.querySelector('#wrong-answer-3');
     const wrongAnswer3Error = currentQuestion.querySelector('.wrong-answer3-error');
-    const inputValue = wrongAnswer3.value 
-
-    if (inputValue === "") {
-            if (inputValue === "") {
-                wrongAnswer3.style.border = "1px solid #D1D1D1";
-                wrongAnswer3Error.classList.add("hidden");
-                return;
-            }
-            wrongAnswer3.style.border = "2px solid crimson";
-            wrongAnswer3Error.classList.remove("hidden");
-    }
-    else {            
-            wrongAnswer3.style.border = "2px solid green";
-            wrongAnswer3Error.classList.add("hidden");
-    }
-}
-
-const validateWrongUrl1 = function(e){
-    e.preventDefault();
-
-    const wrongUrl1 = currentQuestion.querySelector('#wrong-url-1');
     const wrongUrl1Error = currentQuestion.querySelector('.wrong-url1-error');
-    const inputValue = wrongUrl1.value 
-
-    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
-            if (inputValue === "") {
-                wrongUrl1.style.border = "1px solid #D1D1D1";
-                wrongUrl1Error.classList.add("hidden");
-                return;
-            }
-            wrongUrl1.style.border = "2px solid crimson";
-            wrongUrl1Error.classList.remove("hidden");
-    }
-    else {            
-            wrongUrl1.style.border = "2px solid green";
-            wrongUrl1Error.classList.add("hidden");
-    }
-}
-
-const validateWrongUrl2 = function(e){
-    e.preventDefault();
-
-    const wrongUrl2 = currentQuestion.querySelector('#wrong-url-2');
     const wrongUrl2Error = currentQuestion.querySelector('.wrong-url2-error');
-    const inputValue = wrongUrl2.value 
-
-    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
-            if (inputValue === "") {
-                wrongUrl2.style.border = "1px solid #D1D1D1";
-                wrongUrl2Error.classList.add("hidden");
-                return;
-            }
-            wrongUrl2.style.border = "2px solid crimson";
-            wrongUrl2Error.classList.remove("hidden");
-    }
-    else {            
-            wrongUrl2.style.border = "2px solid green";
-            wrongUrl2Error.classList.add("hidden");
-    }
-}
-
-const validateWrongUrl3 = function(e){
-    e.preventDefault();
-
-    const wrongUrl3 = currentQuestion.querySelector('#wrong-url-3');
     const wrongUrl3Error = currentQuestion.querySelector('.wrong-url3-error');
-    const inputValue = wrongUrl3.value 
 
-    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
-            if (inputValue === "") {
-                wrongUrl3.style.border = "1px solid #D1D1D1";
-                wrongUrl3Error.classList.add("hidden");
-                return;
-            }
-            wrongUrl3.style.border = "2px solid crimson";
-            wrongUrl3Error.classList.remove("hidden");
-    }
-    else {            
-            wrongUrl3.style.border = "2px solid green";
-            wrongUrl3Error.classList.add("hidden");
+    const arrAnswers = [rightAnswer,wrongAnswer1,wrongAnswer2,wrongAnswer3];
+    const arrAnswersError = [rightAnswerError, wrongAnswer1Error,wrongAnswer2Error,wrongAnswer3Error];
+    const arrUrls = [urlImageRight, wrongUrl1, wrongUrl2,wrongUrl3];
+    const arrUrlErros = [urlImageRightError, wrongUrl1Error, wrongUrl2Error,wrongUrl3Error];
+
+    for (let i = 0; i < 4; i++) {
+        const answerCondition = arrAnswers[i] === "";
+        const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
+        checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
+        checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
     }
 }
 
-const validateLevelTitle = function(e) {
+const validateCurrentLevel = e => {
     e.preventDefault();
+    validateLevelTitle();
+    validateMinPercentage();
+    validateLevelImageUrl();
+    validateLevelDescription();
+}
 
+function validateLevelTitle() {
     const levelTitleError = currentLevel.querySelector('.level-title-error');
-    const inputValue = levelTitle.value 
-
-    if (inputValue.length < 10) {
-            if (inputValue === "") {
-                levelTitle.style.border = "1px solid #D1D1D1";
-                levelTitleError.classList.add("hidden");
-                return;
-            }
-            levelTitle.style.border = "2px solid crimson";
-            levelTitleError.classList.remove("hidden");
-    }
-    else {            
-            levelTitle.style.border = "2px solid green";
-            levelTitleError.classList.add("hidden");
-    }
+    const condition = levelTitle.value.length < 10;
+    checkRule(levelTitle, levelTitleError,condition);
 }
 
-const validateMinPercentage = function(e) {
-    e.preventDefault();
-
+function validateMinPercentage() {
     const minPercentageError = currentLevel.querySelector('.min-percentage-error');
     const inputValue = minPercentage.value 
-
-    // !inputValue é um truthy ou falsy dependendo se o inputValue veio como numero ou letra
-    if ((!Number(inputValue) && Number(inputValue) !== 0) || !Number.isInteger(Number(inputValue)) || Number(inputValue) < 0 || Number(inputValue) > 100 || inputValue === "") {
-            if (inputValue === "") {
-                minPercentage.style.border = "1px solid #D1D1D1";
-                minPercentageError.classList.add("hidden");
-                return;
-            }
-            minPercentage.style.border = "2px solid crimson";
-            minPercentageError.classList.remove("hidden");
-    }
-    else {            
-            minPercentage.style.border = "2px solid green";
-            minPercentageError.classList.add("hidden");
-    }
+    const condition = (!Number(inputValue) && Number(inputValue) !== 0) || !Number.isInteger(Number(inputValue)) || Number(inputValue) < 0 || Number(inputValue) > 100 || inputValue === "";  
+    checkRule(minPercentage,minPercentageError,condition);
 }
 
-const validateLevelImageUrl = function(e) {
-    e.preventDefault();
-
+function validateLevelImageUrl() {
     const levelImageUrlError = currentLevel.querySelector('.level-image-error');
-    const inputValue = levelImageUrl.value 
-
-    if (inputValue.length < 5 || inputValue.substring(0,8) !== "https://") {
-            if (inputValue === "") {
-                levelImageUrl.style.border = "1px solid #D1D1D1";
-                levelImageUrlError.classList.add("hidden");
-                return;
-            }
-            levelImageUrl.style.border = "2px solid crimson";
-            levelImageUrlError.classList.remove("hidden");
-    }
-    else {            
-            levelImageUrl.style.border = "2px solid green";
-            levelImageUrlError.classList.add("hidden");
-    }
+    const condition = levelImageUrl.value.length < 5 || levelImageUrl.value.substring(0,8) !== "https://"
+    checkRule(levelImageUrl,levelImageUrlError,condition);
 }
 
-const validateLevelDescription = function(e) {
-    e.preventDefault();
-
+function validateLevelDescription() {
     const levelDescriptionError = currentLevel.querySelector('.level-description-error');
-    const inputValue = levelDescription.value;
-
-    if (inputValue.length < 30) {
-            if (inputValue === "") {
-                levelDescription.style.border = "1px solid #D1D1D1";
-                levelDescriptionError.classList.add("hidden");
-                return;
-            }
-            levelDescription.style.border = "2px solid crimson";
-            levelDescriptionError.classList.remove("hidden");
-    }
-    else {            
-            levelDescription.style.border = "2px solid green";
-            levelDescriptionError.classList.add("hidden");
-    }
+    const condition = levelDescription.value.length < 30
+    checkRule(levelDescription,levelDescriptionError,condition);
 }
 
 function validateLevelSection() {
