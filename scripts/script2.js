@@ -1,6 +1,7 @@
 let quizz = [];
 let questions = [];
 let correctAnswers = [];
+let qtyCorrectChoices = 0
 
 // Se adicionar mais variaveis globais lembre de zerar elas nessa função
 function resetQuizzGame(id){
@@ -21,6 +22,7 @@ function resetQuizzGame(id){
     quizz = [];
     questions = [];
     correctAnswers = [];
+    qtyCorrectChoices = 0
     getQuizz(id)
 }
 
@@ -106,15 +108,22 @@ function selectAnswer(choice) {
         alternativesByQuestion.classList.add("answered")
     }
     choice.classList.remove("unchosen");
-    verifyAnswer(options);
+    verifyAnswer(options, choice);
 }
 
-function verifyAnswer(options) {
-    options.forEach(element => {
-        if (correctAnswers[element.id]){
-            element.classList.add("correct");
+function verifyAnswer(options, choice) {
+    options.forEach(option => {
+        if (correctAnswers[option.id]){
+            option.classList.add("correct");
+            if (option.id === choice.id){
+                qtyCorrectChoices++;
+            }
         }else{
-            element.classList.add("wrong");
+            option.classList.add("wrong");
         }
     });
+}
+
+function calcPrecision() {
+    return ((qtyCorrectChoices / questions.length) * 100).toFixed(0)
 }
