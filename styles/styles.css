@@ -26,7 +26,7 @@ strong{
     left: 0px;
     z-index: 10;
     background-color: #ec362d;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.025);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 h1 {
     font-size: 37px;
@@ -137,7 +137,7 @@ h2 {
     left: 20px;
     bottom: 7px;
     width: 300px;
-    height: 50px;
+    height: 60px;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -153,7 +153,7 @@ h2 {
     font-weight: normal;
     font-size: 19px;
     line-height: 22px;
-    word-wrap: break-word;
+    word-break: break-word;
 }
 
 .clickable-box {
@@ -195,7 +195,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    word-break: break-all;
+    word-break: break-word;
     padding: 35px;
     margin-top: 69px;
 }
@@ -234,7 +234,7 @@ h2 {
     align-items: center;
     justify-content: center;
     text-align: center;
-    word-break: break-all;
+    word-break: break-word;
     padding: 20px;
     margin-bottom: 40px;
 }
@@ -263,7 +263,7 @@ h2 {
     font-size: 20px;
     font-weight: 700;
     line-height: 30px;
-    word-break: break-all;
+    word-break: break-word;
 }
 .results {
     width: 760px;
@@ -291,7 +291,7 @@ h2 {
     text-align: center;
     padding: 20px;
     margin-bottom: 40px;
-    word-break: break-all;
+    word-break: break-word;
 }
 .results-image {
     width: 330px;
@@ -300,7 +300,7 @@ h2 {
     width: 330px;
     font-size: 19px;
     font-weight: 700;
-    word-break: break-all;
+    word-break: break-word;
 }
 .reload-quizz {
     width: 260px;
