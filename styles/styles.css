@@ -26,7 +26,7 @@ strong{
     left: 0px;
     z-index: 10;
     background-color: #ec362d;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.025);
 }
 h1 {
     font-size: 37px;
@@ -47,11 +47,10 @@ h2 {
 .section-title{
     font-size: 20px;
     line-height: 23px;
+    margin-bottom: 12px;
     display: flex;
     align-items: center;
     text-align: center;
-    height: 40px;
-    margin-bottom: 10px;
 }
 .user-quizzes{
     margin-bottom: 48px;
@@ -203,11 +202,11 @@ h2 {
     justify-content: center;
 }
 .question {
-    width: 759px;
+    width: 760px;
     height: auto;
     background-color: #ffffff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
-    padding: 35px;
+    padding: 30px;
 
     display: flex;
     flex-wrap: wrap;
@@ -228,16 +227,13 @@ h2 {
     text-align: center;
     word-break: break-all;
     padding: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
 }
 .alternatives {
+    width: 760px;
     display: grid;
     grid-template-columns: repeat(2, auto);
-    gap: 25px;
-}
-.alternative {
-    display: flex;
-    flex-direction: column;
+    column-gap: 40px;
 }
 .alternative.wrong {
     color: #ff4b4b;
@@ -254,17 +250,18 @@ h2 {
     object-fit: cover;
 }
 .alternative-name {
+    width: 330px;
     font-size: 20px;
     font-weight: 700;
     line-height: 30px;
     word-break: break-all;
 }
 .results {
-    width: 759px;
+    width: 760px;
     height: auto;
     background-color: #ffffff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
-    padding: 35px;
+    padding: 30px;
 
     display: flex;
     flex-wrap: wrap;
@@ -284,7 +281,7 @@ h2 {
     justify-content: center;
     text-align: center;
     padding: 20px;
-    margin-bottom: 25px;
+    margin-bottom: 40px;
     word-break: break-all;
 }
 .results-image {
@@ -497,41 +494,44 @@ button:hover {
     /* --- finish Media query of home - Kevin part --- */
     /* --- starting Media query of quizz - Marcos part ---  */
     .banner {
-        min-height: 142px;
-        padding: 20px;
+        min-height: 184px;
+        padding: 30px;
     }
     .quizz-name {
-        font-size: 19px;
+        font-size: 29px;
     }
     .questions {
         margin: 25px auto 0px auto;
     }
     .question {
-        width: 100%;
-        padding: 20px;
+        width: 725px;
+        padding: 30px;
         margin-bottom: 25px;
     }
     .question-text {
-        font-size: 19px;
+        font-size: 21px;
         text-align: center;
-        margin-bottom: 25px;
+        margin-bottom: 35px;
+    }
+    .alternatives {
+        column-gap: 35px;
     }
     .alternative-image {
-        width: 100%;
-        height: 100%;
+        width: 315px;
+        height: 165px;
     }
     .alternative-name {
-        font-size: 13px;
+        width: 315px;
+        font-size: 16px;
     }
     .results {
-        width: 100%;
-        padding: 20px;
+        width: 725px;
+        padding: 30px;
         flex-direction: column;
         margin: 0px auto 35px auto;
     }
     .results-title {
-        font-size: 19px;
-        text-align: center;
+        font-size: 21px;
     }
     .results-image {
         width: 100%;
@@ -539,7 +539,7 @@ button:hover {
     }
     .results-text {
         width: 100%;
-        font-size: 17px;
+        font-size: 16px;
     }
     .reload-quizz {
         width: 220px;
@@ -586,8 +586,62 @@ button:hover {
     .user-quizzes .empty {
         width: 340px;
     }
-    .section-title{
-        justify-content: space-between;
-        padding-right: 11.75px;
+    .banner {
+        min-height: 142px;
+        padding: 20px;
+    }
+    .quizz-name {
+        font-size: 19px;
+    }
+    .questions {
+        margin: 25px auto 0px auto;
+    }
+    .question {
+        width: 100%;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+    .question-text {
+        font-size: 19px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .alternatives {
+        column-gap: 25px;
+        width: 100%;
+    }
+    .alternative-image {
+        width: 100%;
+    }
+    .alternative-name {
+        width: 100%;
+        line-height: 20px;
+        font-size: 13px;
+    }
+    .results {
+        width: 100%;
+        padding: 20px;
+        flex-direction: column;
+        margin: 0px auto 35px auto;
+    }
+    .results-title {
+        font-size: 19px;
+        text-align: center;
+    }
+    .results-image {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    .results-text {
+        width: 100%;
+        font-size: 17px;
+    }
+    .reload-quizz {
+        width: 220px;
+        height: 44px;
+        font-size: 18px;
+    }
+    .back-home {
+        font-size: 18px;
     }
 }
