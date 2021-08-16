@@ -1,10 +1,11 @@
 let quizz = [];
 let questions = [];
 let correctAnswers = [];
-let qtyCorrectChoices = 0
+let qtyCorrectChoices = 0;
 
 // Se adicionar mais variaveis globais lembre de zerar elas nessa função
 function resetQuizzGame(id){
+    addLoadScreen();
     const quizzGame = document.querySelector(".quizz-game");
     quizzGame.innerHTML = `<div class="banner">
     </div>
@@ -90,6 +91,8 @@ function renderQuestions() {
     for (i = 0; i < titles.length; i++) {
         titles[i].style.backgroundColor = `${questions[i].color}`
     }
+
+    removeLoadScreen()
 }
 
 function shuffleAlternatives() { 

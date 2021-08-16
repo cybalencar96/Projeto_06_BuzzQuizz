@@ -3,6 +3,7 @@ const URL_API = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/qu
 // Home - Kevin part
 requestQuizzes()
 function requestQuizzes() {
+    addLoadScreen();
     const promise = axios.get(URL_API)
     promise.then(renderHome);
     promise.catch(console.log)
@@ -21,6 +22,9 @@ function renderHome(response) {
                 <p>${quizz.title}</p>
             </div>`;
         }});
+    if (userQuizzIds.length === 0){
+        removeLoadScreen();
+    }
 }
 
 function renderUserQuizzes () {
@@ -43,7 +47,7 @@ function renderUserQuizzes () {
         <div class="quizz-box">
         </div>`
         const userQuizzBox = document.querySelector(".user-quizzes .quizz-box")
-        userQuizzIds.forEach(quizzId => {
+        userQuizzIds.forEach((quizzId, index) => {
             let quizz;
             const promise = axios.get(URL_API + `/${quizzId.id}`);
             promise.then(response => {
@@ -60,6 +64,9 @@ function renderUserQuizzes () {
                     </div>
                     <p>${quizz.title}</p>
                 </div>`
+                if (index === userQuizzIds.length - 1){
+                    removeLoadScreen();
+                }
             });
         });
     }
@@ -103,6 +110,14 @@ function changePage(pageId, information){
             pages[2].classList.add("hidden");
             break;
     }
+}
+
+function addLoadScreen() {
+    document.querySelector(".loading-screen").classList.remove("hidden");
+}
+
+function removeLoadScreen() {
+    document.querySelector(".loading-screen").classList.add("hidden");
 }
 
 // Forms scripts - Carlos part 
@@ -506,6 +521,7 @@ function hasLevelErrors() {
 }
 
 function loadFormEnd() {
+    addLoadScreen();
     if (hasLevelErrors()) { 
         alert('Preencha os campos obrigatórios corretamente');
         return; 
@@ -544,9 +560,11 @@ function uploadNewQuizz() {
 
         console.log(userQuizzIds);
         localStorage.setItem("userQuizzIds", userQuizzIds);
+        removeLoadScreen();
     })
     .catch(err => {
         console.log(err.response);
+        removeLoadScreen();
     })
 }
 
@@ -556,6 +574,7 @@ function startNewQuizz() {
 }
 
 function deleteUserQuizz(id, auth) {
+    
     axios.delete(`https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes/${id}`, {
         headers: {
             'Secret-Key': auth,
