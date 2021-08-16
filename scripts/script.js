@@ -33,7 +33,9 @@ function renderHome(response) {
             allQuizzBox.innerHTML += `<div class="quizz clickable" onclick="changePage(1, ${quizz.id})">
                 <img src="${quizz.image}">
                 <div class="black-gradient"></div>
-                <p>${quizz.title}</p>
+                <div class="title-box">
+                    <p>${quizz.title}</p>
+                </div>
             </div>`;
         }});
     if (userQuizzIds.length === 0){
@@ -75,7 +77,9 @@ function renderUserQuizzes () {
                         <ion-icon onclick="editUserQuizz(${quizzId.id},'${quizzId.auth}')" name="create-outline"></ion-icon>
                         <ion-icon onclick="deleteUserQuizz(${quizzId.id},'${quizzId.auth}')" name="trash-outline"></ion-icon>
                     </div>
-                    <p>${quizz.title}</p>
+                    <div class="title-box">
+                        <p>${quizz.title}</p>
+                    </div>
                 </div>`
                 if (index === userQuizzIds.length - 1){
                     removeLoadScreen();
