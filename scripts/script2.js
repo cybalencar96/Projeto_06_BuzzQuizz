@@ -69,8 +69,8 @@ function renderQuestions() {
         alternative = alternative.sort(shuffleAlternatives);
         stringAlternatives = "";
         for (let j = 0; j < alternative.length; j++, altId++) {
-            stringAlternatives += `<div class="alternative clickable" onclick="selectAnswer(this)" id="${altId}">
-                <img class="alternative-image" src="${questions[i].answers[alternative[j]].image}">
+            stringAlternatives += `<div class="alternative" onclick="selectAnswer(this)" id="${altId}">
+                <img class="alternative-image clickable" src="${questions[i].answers[alternative[j]].image}">
                 <span class="alternative-name">${questions[i].answers[alternative[j]].text}</span>
             </div>
             `

@@ -87,6 +87,10 @@ h2 {
     color: #EC362D;
     margin-left: 17px;
 }
+.user-quizzes .section-title ion-icon:hover{
+    color: lightcoral;
+    cursor: pointer;
+}
 .all-quizzes{
     display: flex;
     flex-direction: column;
@@ -101,6 +105,7 @@ h2 {
     width: 340px;
     height: 181px;
     position: relative; 
+    border-radius: 5px;
 }
 .black-gradient{
     width: 100%;
@@ -158,6 +163,10 @@ h2 {
     top: 0;
     left: 0;
     z-index: 100;
+}
+
+.box-edit-exclude{
+    cursor: default;
 }
 
 .box-edit-exclude ion-icon {
@@ -320,6 +329,7 @@ h2 {
 }
 .clickable:hover {
     cursor: pointer;
+    box-shadow: 0px 0px 5px 2px #ec362d;
 }
 button:hover { 
     cursor: pointer;

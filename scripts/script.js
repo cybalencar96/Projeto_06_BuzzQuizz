@@ -58,7 +58,7 @@ function renderUserQuizzes () {
     if (userQuizzIds.length > 0) {
         userQuizzes.innerHTML = `<div class="section-title">
             <strong>Seus Quizzes</strong>
-            <ion-icon name="add-circle" class="clickable" onclick="changePage(2)"></ion-icon>
+            <ion-icon name="add-circle" onclick="changePage(2)"></ion-icon>
         </div>
         <div class="quizz-box">
         </div>`
@@ -69,8 +69,7 @@ function renderUserQuizzes () {
             promise.then(response => {
                 quizz = response.data;
                 userQuizzBox.innerHTML += 
-                `<div class="quizz">
-                    <div class="clickable-box clickable" onclick="changePage(1, ${quizzId.id})"></div>
+                `<div class="quizz clickable" onclick="changePage(1, ${quizzId.id})">
                     <img src="${quizz.image}">
                     <div class="black-gradient"></div>
                     <div class="box-edit-exclude">
