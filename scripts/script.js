@@ -764,10 +764,6 @@ function updateLevelsSection(id,auth) {
         return; 
     }
     saveQuestion();
-    // if (formData.questions.length !== qtyQuestionsValue) {
-    //     alert('Preencha todas as perguntas antes de prosseguir');
-    //     return;
-    // }
     currentQuestion.removeEventListener('keyup',validateCurrentQuestion);
     const questionsSection = document.querySelector('.questions-form');
     questionsSection.classList.add('hidden');
