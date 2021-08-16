@@ -354,6 +354,8 @@ function toggleQuestion(newSectionForm, questionIdentifier) {
         editIcon.classList.add('hidden');
         questionId = questionIdentifier;
         currentQuestion.classList.add('show');
+
+        setTimeout(currentQuestion.querySelector('#question-text').scrollIntoView,300)
         listenQuestion();
     } 
     else {

@@ -394,6 +394,7 @@ button:hover {
     width: 26px;
     height: 26px;
     padding: 20px 10px 20px 20px;
+    cursor: pointer;
 }
 
 .add-quizz .question-content {
