@@ -55,7 +55,7 @@ function validateTitle() {
 function validateQuizzImage() {
     const quizzImage = document.querySelector('.basic-info-form #url-quizz-image');
     const quizzImageError = document.querySelector(".basic-info-form .url-error");
-    const condition = quizzImage.value.length < 5 || quizzImage.value.substring(0,8) !== "https://";
+    const condition = !(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(quizzImage.value);
     checkRule(quizzImage,quizzImageError, condition)
 }
 
@@ -112,14 +112,14 @@ function validateAnswers() {
     if (formData.questions[questionId-1] === undefined) {
         for (let i = 0; i < 4; i++) {
             const answerCondition = arrAnswers[i] === "";
-            const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
+            const urlCondition = !(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(arrUrls[i].value);
             checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
             checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
         }
     } else {
         for (let i = 0; i < formData.questions[questionId-1].answers.length; i++) {
             const answerCondition = arrAnswers[i] === "";
-            const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
+            const urlCondition = !(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(arrUrls[i].value);
             checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
             checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
         }
@@ -143,7 +143,7 @@ function validateMinPercentage() {
 
 function validateLevelImageUrl() {
     const levelImageUrlError = currentLevel.querySelector('.level-image-error');
-    const condition = levelImageUrl.value.length < 5 || levelImageUrl.value.substring(0,8) !== "https://"
+    const condition = !(/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(levelImageUrl.value);
     checkRule(levelImageUrl,levelImageUrlError,condition);
 }
 
