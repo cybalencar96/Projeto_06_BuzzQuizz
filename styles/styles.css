@@ -54,6 +54,7 @@ h2 {
     align-items: center;
     text-align: center;
     height: 40px;
+    margin-bottom: 10px;
 }
 .user-quizzes{
     margin-bottom: 48px;
@@ -691,5 +692,9 @@ button:hover {
     }
     .user-quizzes .empty {
         width: 340px;
+    }
+    .section-title{
+        justify-content: space-between;
+        padding-right: 11.75px;
     }
 }
