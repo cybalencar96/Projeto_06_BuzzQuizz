@@ -26,7 +26,7 @@ strong{
     left: 0px;
     z-index: 10;
     background-color: #ec362d;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.025);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 h1 {
     font-size: 37px;
