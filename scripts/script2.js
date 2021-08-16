@@ -112,7 +112,7 @@ function selectAnswer(choice) {
     }
     choice.classList.remove("unchosen");
     verifyAnswer(options, choice);
-    setTimeout(newAutoScroll, 2000, choice);
+    setTimeout(autoScroll, 2000, getCurrentQuestionIndex(choice));
 }
 
 function verifyAnswer(options, choice) {
@@ -132,39 +132,21 @@ function calcScore() {
     return ((qtyCorrectChoices / questions.length) * 100).toFixed(0);
 }
 
-// Essa versão tem um bug tenso, como o usuario pode descer a pagina a vontade
-// se ele responder a ultima questão ja é renderizado a resposta.
-// Pra concertar isso teria que ou limitar o usuario a responder as questões em ordem,
-// ou sempre que ele respondesse uma questão verificariamos se todas ja foram respondidas,
-// a newAutoScroll junta tudo em uma coisa só menor e melhor.
-function autoScroll(choice) {
+function getCurrentQuestionIndex(choice) {
     let DOMQuestions = document.querySelectorAll(".question");
     let question = choice.parentNode.parentNode;
-    let nextQuestionIndex = 0;
-
     for (i = 0; i < DOMQuestions.length; i++) {
         if (DOMQuestions[i] === question) {
-            if (i === DOMQuestions.length - 1) {
-                renderResult();
-                document.querySelector(".results").scrollIntoView({block:"center", behavior:"smooth"});
-            } else {
-                nextQuestionIndex = i + 1;
-                DOMQuestions[nextQuestionIndex].scrollIntoView({block:"center", behavior:"smooth"});
-            }
-            return;
+            return i;
         }
     }
 }
 
-// Com essa função surge um problema menor, mas ainda existente:
-// - Ela sempre pega a questão não respondida mais acima
-// Da pra fazer uma solução pra esse problema com variavel global
-function newAutoScroll(choice) {
+function autoScroll(currentIndex) {
     let DOMQuestions = document.querySelectorAll(".question");
-    let question = choice.parentNode.parentNode;
-    for (let i = 0; i < DOMQuestions.length; i++) {
-        if (!DOMQuestions[i].lastElementChild.classList.contains("answered")) {
-            DOMQuestions[i].scrollIntoView({block:"center", behavior:"smooth"});
+    for (let i = currentIndex; i < DOMQuestions.length + currentIndex; i++) {
+        if (!DOMQuestions[i % (DOMQuestions.length)].lastElementChild.classList.contains("answered")) {
+            DOMQuestions[i % (DOMQuestions.length)].scrollIntoView({block:"center", behavior:"smooth"});
             return;
         }
     }

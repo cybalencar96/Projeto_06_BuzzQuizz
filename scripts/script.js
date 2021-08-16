@@ -1,12 +1,26 @@
 const URL_API = "https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes";
 
 // Home - Kevin part
-requestQuizzes()
+resetHome();
 function requestQuizzes() {
     addLoadScreen();
     const promise = axios.get(URL_API)
     promise.then(renderHome);
     promise.catch(console.log)
+}
+
+function resetHome() {
+    document.querySelector(".home").innerHTML = `<section class="user-quizzes ">
+    </section>
+    <section class="all-quizzes">
+        <div class="section-title">
+            <strong>Todos os Quizzes</strong>
+        </div>
+        <div class="quizz-box">
+        </div>
+    </section>
+    `;
+    requestQuizzes()
 }
 
 function renderHome(response) {
@@ -89,7 +103,7 @@ function changePage(pageId, information){
             pages[2].classList.add("hidden");
             pages[1].classList.add("hidden");
             pages[0].classList.remove("hidden");
-            requestQuizzes();
+            resetHome();
             break;
         case 1:
             pages[2].classList.add("hidden");
