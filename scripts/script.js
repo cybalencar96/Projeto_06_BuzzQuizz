@@ -51,7 +51,6 @@ function renderUserQuizzes () {
             let quizz;
             const promise = axios.get(URL_API + `/${quizzId.id}`);
             promise.then(response => {
-                console.log(quizzId.id,quizzId.auth);
                 quizz = response.data;
                 userQuizzBox.innerHTML += 
                 `<div class="quizz">
@@ -124,7 +123,7 @@ function removeLoadScreen() {
 let qtyQuestionsValue;
 let qtyLevelsValue;
 
-const formData = {
+let formData = {
     title:"",
     image:"",
     questions: [],
@@ -295,6 +294,7 @@ function loadQuestionsSection() {
     }
     currentQuestion = document.querySelector(`#question-1`);
     currentQuestion.querySelector('ion-icon').classList.add('hidden');
+    questionsSection.querySelector('button').setAttribute('onclick', "loadLevelsSection()");
     listenQuestion();
 }
 
@@ -362,22 +362,32 @@ function saveQuestion() {
             }
         ]
     }
-
-    const answer = {
+    const answer2 = {
         text: "",
         image: "",
         isCorrectAnswer:false
     }
-    if (wrongAnswer2.value !== "" && wrongUrl2.value !== "") {
-        answer.text = wrongAnswer2.value;
-        answer.image = wrongUrl2.value;
-        question.answers.push(answer);
+    const answer3 = {
+        text: "",
+        image: "",
+        isCorrectAnswer:false
     }
-    if (wrongAnswer3.value !== "" && wrongUrl3.value !== "") {
-        answer.text = wrongAnswer3.value;
-        answer.image = wrongUrl3.value;
-        question.answers.push(answer);
-    }
+    
+     if (wrongAnswer2 !== null && wrongUrl2 !== null) {
+         if (wrongAnswer2.value !== "" && wrongUrl2.value !== "") {
+             answer2.text = wrongAnswer2.value;
+             answer2.image = wrongUrl2.value;
+             question.answers.push(answer2);
+         }
+     }
+
+     if (wrongAnswer3 !== null && wrongUrl3 !== null) {
+         if (wrongAnswer3.value !== "" && wrongUrl3.value !== "") {
+             answer3.text = wrongAnswer3.value;
+             answer3.image = wrongUrl3.value;
+             question.answers.push(answer3);
+         }
+     }
 
     indexUpdateQuestion = questionIds.indexOf(questionId);
     
@@ -386,6 +396,8 @@ function saveQuestion() {
         formData.questions.push(question);
     }
     else { formData.questions[indexUpdateQuestion] = question }
+
+    console.log(formData);
 }
 
 function hasQuestionErrors() {
@@ -450,6 +462,7 @@ function loadLevelsSection() {
     }
     currentLevel = document.querySelector(`#level-1`);
     currentLevel.querySelector('ion-icon').classList.add('hidden');
+    questionsSection.querySelector('button').setAttribute('onclick', "loadFormEnd()");
     listenLevel();
 }
 
@@ -503,6 +516,9 @@ function saveLevel() {
         formData.levels.push(level);
     }
     else { formData.levels[indexUpdateLevel] = level }
+
+    console.log(formData);
+
 }
 
 function hasLevelErrors() {
@@ -543,13 +559,12 @@ function loadFormEnd() {
     const quizzTitle = formEndSection.querySelector('.quizz-image p');
     quizzTitle.innerHTML = formData.title;
 
-    uploadNewQuizz();
+    postQuizz();
 }
 
-function uploadNewQuizz() {
+function postQuizz() {
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes',formData)
     .then(res => {
-        console.log(res.data);
         // att localStorage
         let userQuizzIds = getUserQuizzes();
         userQuizzIds.push({
@@ -557,8 +572,6 @@ function uploadNewQuizz() {
             auth: res.data.key
         });
         userQuizzIds = JSON.stringify(userQuizzIds);
-
-        console.log(userQuizzIds);
         localStorage.setItem("userQuizzIds", userQuizzIds);
         removeLoadScreen();
     })
@@ -570,7 +583,7 @@ function uploadNewQuizz() {
 
 function startNewQuizz() {
     let userQuizzIds = getUserQuizzes();
-    changePage(1,userQuizzIds[userQuizzIds.length-1])
+    changePage(1,userQuizzIds[userQuizzIds.length-1].id)
 }
 
 function deleteUserQuizz(id, auth) {
@@ -583,10 +596,8 @@ function deleteUserQuizz(id, auth) {
     .then(res => {
         let userQuizzIds = getUserQuizzes();
         deletedIdIndex = userQuizzIds.map(idsObj => { return idsObj.id }).indexOf(id);
-        console.log(deletedIdIndex)
         //remove 1 item no indice "deleteIdIndex"
         userQuizzIds.splice(deletedIdIndex,1);
-        console.log(userQuizzIds);
         userQuizzIds = JSON.stringify(userQuizzIds);
         localStorage.setItem("userQuizzIds", userQuizzIds);
         changePage(0);
@@ -594,11 +605,237 @@ function deleteUserQuizz(id, auth) {
     .catch(err => {
         console.log(err.response);
     });
+}
 
-   
+function editUserQuizz(id, auth) {    
+    axios(`https://mock-api.bootcamp.respondeai.com.br/api/v3/buzzquizz/quizzes/${id}`)
+    .then(res => {
+        updateQuestionsSection(res.data,id,auth);
+    })
+}
+
+function updateQuestionsSection(quizzToEdit,id,auth) {
+    changePage(2);
+    formData.title = quizzToEdit.title;
+    formData.image = quizzToEdit.image;
+    formData.questions = quizzToEdit.questions;
+    formData.levels = quizzToEdit.levels
+
+    const questionsSection = document.querySelector('.questions-form');
+    const basicForm = document.querySelector('.basic-info-form');
+    questionsSection.classList.remove('hidden');
+    basicForm.classList.add('hidden');
+
+    const questionsContainer = questionsSection.querySelector('.subforms-container');
+    questionsContainer.innerHTML = "";
+
+    for (let i = 0; i < formData.questions.length; i++) {
+        if (formData.questions[i].answers.length === 4){
+            let questionFormModel = 
+            `<form action="" id="question-${i+1}">
+                <div class="top-question-bar" >
+                    <h3>Pergunta ${i+1}</h3>
+                    <ion-icon onclick="toggleQuestion(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input required type="text" id="question-text" placeholder="Texto da pergunta" value="${formData.questions[i].title}">
+                        <h5 class="question-text-error hidden">Título precisa possuir no mínimo 20 caracteres</h5>
+                    <input required type="text" id="background-color-text" placeholder="Cor de fundo da pergunta" value="${formData.questions[i].color}">
+                        <h5 class="background-text-error hidden">Insira no formato hexadecimal. Ex: #123ABC</h5>
+
+                    <h3 class="right">Resposta correta</h3>
+                    <input required type="text" id="right-answer" placeholder="Resposta correta"  value="${formData.questions[i].answers[0].text}">
+                        <h5 class="right-answer-error hidden">Campo obrigatório. Preencha a resposta correta</h5>
+                    <input required type="text" id="url-image-right" placeholder="URL da imagem" value="${formData.questions[i].answers[0].image}">
+                        <h5 class="image-right-error hidden">Formato URL inválido</h5>
+                    
+                    <h3 class="wrong">Respostas incorretas</h3>
+                    <input required type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1"  value="${formData.questions[i].answers[1].text}">
+                        <h5 class="wrong-answer1-error hidden">Campo obrigatório. Preencha 1 resposta incorreta</h5>
+                    <input required type="text" id="wrong-url-1" placeholder="URL da imagem 1" value="${formData.questions[i].answers[1].image}">
+                        <h5 class="wrong-url1-error hidden">Formato URL inválido</h5>
+
+
+                    <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2" value="${formData.questions[i].answers[2].text}">
+                        <h5 class="wrong-answer2-error hidden">Campo não pode permanecer vazio</h5>
+                    <input type="text" id="wrong-url-2" placeholder="URL da imagem 2" value="${formData.questions[i].answers[2].image}">
+                        <h5 class="wrong-url2-error hidden">Formato URL inválido</h5>
+
+
+                    <input type="text" id="wrong-answer-3" placeholder="Resposta incorreta 3" value="${formData.questions[i].answers[3].text}">
+                        <h5 class="wrong-answer3-error hidden">Campo não pode permanecer vazio</h5>
+                    <input type="text" id="wrong-url-3" placeholder="URL da imagem 3" value="${formData.questions[i].answers[3].image}">
+                        <h5 class="wrong-url3-error hidden">Formato URL inválido</h5>     
+                </div>     
+            </form>`;
+            questionsContainer.innerHTML += questionFormModel;
+        }
+
+        if (formData.questions[i].answers.length === 3){
+            let questionFormModel = 
+            `<form action="" id="question-${i+1}">
+                <div class="top-question-bar" >
+                    <h3>Pergunta ${i+1}</h3>
+                    <ion-icon onclick="toggleQuestion(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input required type="text" id="question-text" placeholder="Texto da pergunta" value="${formData.questions[i].title}">
+                        <h5 class="question-text-error hidden">Título precisa possuir no mínimo 20 caracteres</h5>
+                    <input required type="text" id="background-color-text" placeholder="Cor de fundo da pergunta" value="${formData.questions[i].color}">
+                        <h5 class="background-text-error hidden">Insira no formato hexadecimal. Ex: #123ABC</h5>
+    
+                    <h3 class="right">Resposta correta</h3>
+                    <input required type="text" id="right-answer" placeholder="Resposta correta"  value="${formData.questions[i].answers[0].text}">
+                        <h5 class="right-answer-error hidden">Campo obrigatório. Preencha a resposta correta</h5>
+                    <input required type="text" id="url-image-right" placeholder="URL da imagem" value="${formData.questions[i].answers[0].image}">
+                        <h5 class="image-right-error hidden">Formato URL inválido</h5>
+                    
+                    <h3 class="wrong">Respostas incorretas</h3>
+                    <input required type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1"  value="${formData.questions[i].answers[1].text}">
+                        <h5 class="wrong-answer1-error hidden">Campo obrigatório. Preencha 1 resposta incorreta</h5>
+                    <input required type="text" id="wrong-url-1" placeholder="URL da imagem 1" value="${formData.questions[i].answers[1].image}">
+                        <h5 class="wrong-url1-error hidden">Formato URL inválido</h5>
+    
+    
+                    <input type="text" id="wrong-answer-2" placeholder="Resposta incorreta 2" value="${formData.questions[i].answers[2].text}">
+                        <h5 class="wrong-answer2-error hidden">Campo não pode permanecer vazio</h5>
+                    <input type="text" id="wrong-url-2" placeholder="URL da imagem 2" value="${formData.questions[i].answers[2].image}">
+                        <h5 class="wrong-url2-error hidden">Formato URL inválido</h5>                    
+                </div>                
+            </form>`;
+            questionsContainer.innerHTML += questionFormModel;
+        }
+
+        if (formData.questions[i].answers.length === 2){
+            let questionFormModel = 
+            `<form action="" id="question-${i+1}">
+                <div class="top-question-bar" >
+                    <h3>Pergunta ${i+1}</h3>
+                    <ion-icon onclick="toggleQuestion(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
+                </div>
+                <div class="question-content">
+                    <input required type="text" id="question-text" placeholder="Texto da pergunta" value="${formData.questions[i].title}">
+                        <h5 class="question-text-error hidden">Título precisa possuir no mínimo 20 caracteres</h5>
+                    <input required type="text" id="background-color-text" placeholder="Cor de fundo da pergunta" value="${formData.questions[i].color}">
+                        <h5 class="background-text-error hidden">Insira no formato hexadecimal. Ex: #123ABC</h5>
+    
+                    <h3 class="right">Resposta correta</h3>
+                    <input required type="text" id="right-answer" placeholder="Resposta correta"  value="${formData.questions[i].answers[0].text}">
+                        <h5 class="right-answer-error hidden">Campo obrigatório. Preencha a resposta correta</h5>
+                    <input required type="text" id="url-image-right" placeholder="URL da imagem" value="${formData.questions[i].answers[0].image}">
+                        <h5 class="image-right-error hidden">Formato URL inválido</h5>
+                    
+                    <h3 class="wrong">Respostas incorretas</h3>
+                    <input required type="text" id="wrong-answer-1" placeholder="Resposta incorreta 1"  value="${formData.questions[i].answers[1].text}">
+                        <h5 class="wrong-answer1-error hidden">Campo obrigatório. Preencha 1 resposta incorreta</h5>
+                    <input required type="text" id="wrong-url-1" placeholder="URL da imagem 1" value="${formData.questions[i].answers[1].image}">
+                        <h5 class="wrong-url1-error hidden">Formato URL inválido</h5>
+                </div>     
+            </form>`;
+            questionsContainer.innerHTML += questionFormModel;
+        }
+        questionIds.push(i+1);
+    }
+
+    currentQuestion = document.querySelector(`#question-1`);
+    currentQuestion.querySelector('ion-icon').classList.add('hidden');
+    questionsSection.querySelector('button').setAttribute('onclick', `updateLevelsSection(${id},"${auth}")`);
+    listenQuestion();
+}
+
+function updateLevelsSection(id,auth) {
+    //primeiro verificar se todas as perguntas constam preenchidas e salvas
+    if (hasQuestionErrors()) { 
+        alert('Preencha os campos obrigatórios corretamente');
+        return; 
+    }
+    saveQuestion();
+    // if (formData.questions.length !== qtyQuestionsValue) {
+    //     alert('Preencha todas as perguntas antes de prosseguir');
+    //     return;
+    // }
+    currentQuestion.removeEventListener('keyup',validateCurrentQuestion);
+    const questionsSection = document.querySelector('.questions-form');
+    questionsSection.classList.add('hidden');
+
+    const levelsSection = document.querySelector('.levels-form');
+    levelsSection.classList.remove('hidden');
+
+    const levelsContainer = levelsSection.querySelector('.levels-form .subforms-container');
+    levelsContainer.innerHTML = "";
+
+    for (let i = 0; i < formData.levels.length; i++) {
+        let levelFormModel = 
+        `<form action="" id="level-${i+1}">
+        <div class="top-question-bar" >
+            <h3>Nível ${i+1}</h3>
+            <ion-icon onclick="toggleLevel(this.parentNode.parentNode,${i+1})" name="create-outline"></ion-icon>
+        </div>
+        <div class="question-content">
+            <input type="text" id="level-title" placeholder="Título do nível" value="${formData.levels[i].title}">
+            <h5 class="level-title-error hidden">Título do nível deve ter no mínimo de 10 caracteres</h5>
+
+            <input type="text" id="min-percentage" placeholder="% de acerto mínima" value="${formData.levels[i].minValue}">
+            <h5 class="min-percentage-error hidden">Escolha um numero inteiro entre 0 e 100</h5>
+
+            <input type="text" id="level-url-image" placeholder="URL da imagem do nível" value="${formData.levels[i].image}">
+            <h5 class="level-image-error hidden">Formato URL inválido</h5>
+            
+            <input type="text" id="level-description" placeholder="Descrição do nível" value="${formData.levels[i].text}">
+            <h5 class="level-description-error hidden">Descrição do nível deve ter no mínimo 30 caracteres</h5>
+        </div>
+        
+    </form>`;
+        levelsContainer.innerHTML += levelFormModel;
+        levelIds.push(i+1);
+    }
+    currentLevel = document.querySelector(`#level-1`);
+    currentLevel.querySelector('ion-icon').classList.add('hidden');
+    levelsSection.querySelector('button').setAttribute('onclick', `updateFormEnd(${id},"${auth}")`);
+    listenLevel();
+}
+
+function updateFormEnd(id,auth) {
+    if (hasLevelErrors()) { 
+        alert('Preencha os campos obrigatórios corretamente');
+        return; 
+    }
+    saveLevel();
+    //verifica se tem algum nível 0
+    const hasZero = formData.levels.map(level => {return level.minValue}).indexOf(0);
+    if (hasZero === -1){
+        alert('Insira ao menos um nível cuja porcentagem mínima seja 0');
+        return;
+    }
+
+    updateQuizz(id,auth);
+
+    currentLevel.removeEventListener('keyup',validateCurrentLevel);
+    const levelsSection = document.querySelector('.levels-form');
+    levelsSection.classList.add('hidden');
+
+    const formEndSection = document.querySelector('.quizz-ready');
+    formEndSection.classList.remove('hidden');
+
+    const quizzImage = formEndSection.querySelector('.quizz-image img');
+    quizzImage.setAttribute('src',formData.image);
+
+    const quizzTitle = formEndSection.querySelector('.quizz-image p');
+    quizzTitle.innerHTML = formData.title;
 
 }
 
-function editUserQuizz() {
-
+function updateQuizz(id,auth) {
+    console.log(formData)
+    axios.put(URL_API + `/${id}`,formData,{
+        headers: {
+            'Secret-Key': auth
+        }
+    })
+    .then(res => {
+        console.log(res.data);
+    })
+    .catch(err => {
+        console.log(err.response);
+    })
 }

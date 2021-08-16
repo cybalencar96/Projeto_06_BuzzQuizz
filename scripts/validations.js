@@ -109,13 +109,22 @@ function validateAnswers() {
     const arrAnswersError = [rightAnswerError, wrongAnswer1Error,wrongAnswer2Error,wrongAnswer3Error];
     const arrUrls = [urlImageRight, wrongUrl1, wrongUrl2,wrongUrl3];
     const arrUrlErros = [urlImageRightError, wrongUrl1Error, wrongUrl2Error,wrongUrl3Error];
-
-    for (let i = 0; i < 4; i++) {
-        const answerCondition = arrAnswers[i] === "";
-        const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
-        checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
-        checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
+    if (formData.questions[questionId-1] === undefined) {
+        for (let i = 0; i < 4; i++) {
+            const answerCondition = arrAnswers[i] === "";
+            const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
+            checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
+            checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
+        }
+    } else {
+        for (let i = 0; i < formData.questions[questionId-1].answers.length; i++) {
+            const answerCondition = arrAnswers[i] === "";
+            const urlCondition = arrUrls[i].value.length < 5 || arrUrls[i].value.substring(0,8) !== "https://";
+            checkRule(arrAnswers[i],arrAnswersError[i],answerCondition);
+            checkRule(arrUrls[i],arrUrlErros[i],urlCondition);
+        }
     }
+    
 }
 
 
